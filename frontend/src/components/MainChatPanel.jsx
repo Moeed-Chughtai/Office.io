@@ -4,6 +4,7 @@ const MainChatPanel = ({ conversationId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
+  const [conversation, setConversation] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -18,6 +19,22 @@ const MainChatPanel = ({ conversationId }) => {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    const fetchConversation = async () => {
+      if (conversationId) {
+        try {
+          const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}`);
+          const data = await response.json();
+          setConversation(data);
+        } catch (error) {
+          console.error('Error fetching conversation data:', error);
+        }
+      }
+    };
+
+    fetchConversation();
+  }, [conversationId]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -66,6 +83,11 @@ const MainChatPanel = ({ conversationId }) => {
 
   return (
     <div className="flex flex-col h-full p-4">
+      {conversation && (
+        <div className="mb-4 text-xl font-bold text-center">
+          Chatting with: {conversation.otherParticipantName}
+        </div>
+      )}
       <div className="flex-1 overflow-y-auto space-y-3">
         {messages.map((msg, index) => (
           <div key={index} className={`p-2 ${msg.isCurrentUser ? 'text-right' : 'text-left'}`}>

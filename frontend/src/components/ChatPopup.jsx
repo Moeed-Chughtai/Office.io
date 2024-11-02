@@ -28,7 +28,7 @@ const ChatPopup = () => {
       {!isContactListOpen && !selectedUser && (
         <div
           onClick={() => setIsContactListOpen(true)}
-          className="cursor-pointer w-72 bg-blue-500 text-white text-center py-2 rounded-lg shadow-lg"
+          className="cursor-pointer w-72 bg-white text-black text-center py-2 rounded-lg shadow-lg hover:bg-blue-300 hover:text-black"
         >
           Contacts
         </div>
@@ -36,12 +36,14 @@ const ChatPopup = () => {
 
       {/* Contact List Section */}
       {isContactListOpen && !selectedUser && (
-        <div className="p-3 space-y-3 overflow-y-auto h-64 w-72">
-          <div className="flex justify-between items-center border-b pb-2 mb-2">
-            <div className="font-bold text-gray-700">Contacts</div>
-            <button onClick={() => setIsContactListOpen(false)} className="text-gray-500 hover:text-gray-800">
-              ✕
-            </button>
+        <div className="p-3 space-y-3 overflow-y-auto h-72 w-72">
+          <div className="sticky top-0 bg-white z-10 p-2 border-b">
+            <div className="flex justify-between items-center">
+              <div className="font-bold text-gray-700">Contacts</div>
+              <button onClick={() => setIsContactListOpen(false)} className="text-gray-500 hover:text-gray-800">
+                ✕
+              </button>
+            </div>
           </div>
           {users.map((user) => (
             <div

@@ -22,7 +22,7 @@ const ResponsiveAppBar = () => {
         <Link to='/schedule' className={`navbar-item ${activeItem === '/schedule' ? 'active' : ''}`}>Schedule</Link>
         <Link to='/messages' className={`navbar-item ${activeItem === '/messages' ? 'active' : ''}`}>Messages</Link>
         <Link to='/' className={`navbar-item ${activeItem === '/jjk' ? 'active' : ''}`}>Contact</Link>
-        <Link to='/' className={`navbar-item ${activeItem === '/jbjc' ? 'active' : ''}`}>Sign Up</Link>
+        <Link to='/login' className={`navbar-item ${activeItem === '/jbjc' ? 'active' : ''}`}>Sign In</Link>
         <div class="animation"></div>
       </nav>
     </>
