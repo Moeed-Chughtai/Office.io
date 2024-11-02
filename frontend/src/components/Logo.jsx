@@ -1,9 +1,10 @@
 import React from 'react';
+import '../css/Logo.css';
 
-const Logo = ({ width = 147, height = 62 }) => {
+const Logo = () => {
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 147 62">
+        <svg className='logo' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 147 62" width='128px' height='auto'>
             <g fill="none" fillRule="evenodd">
                 <path
                 fill="white"
