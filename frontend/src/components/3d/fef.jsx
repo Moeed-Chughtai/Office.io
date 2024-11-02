@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ConversationList from '../functions/ConversationList';
 import MainChatPanel from './MainChatPanel';
-import ResizablePanel from '../functions/ResizablePanel';
 
 function Messaging() {
   const [selectedConversationId, setSelectedConversationId] = useState(null);
@@ -9,7 +8,7 @@ function Messaging() {
   return (
     <div className="h-screen bg-gray-100 flex">
       {/* Sidebar for Conversation List */}
-      <div className="bg-white border-r border-gray-200 h-full w-2/5">
+      <div className="bg-white border-r border-gray-200 h-full w-1/4">
         <ConversationList onSelectConversation={setSelectedConversationId} />
       </div>
       
