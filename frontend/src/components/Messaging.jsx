@@ -3,21 +3,21 @@ import ConversationList from '../functions/ConversationList';
 import MainChatPanel from './MainChatPanel';
 import ResizablePanel from '../functions/ResizablePanel';
 
-function Messaging() {
+function Messaging({ userType }) {
   const [selectedConversationId, setSelectedConversationId] = useState(null);
 
   return (
-    <div className="h-screen bg-gray-100 flex">
+    <div className="h-screen w-screen bg-gray-100 flex">
       <ResizablePanel>
-        {/* Sidebar for Conversation List */}
         <div className="bg-white border-r border-gray-200 h-full">
-          <ConversationList onSelectConversation={setSelectedConversationId} />
+          <ConversationList 
+            onSelectConversation={setSelectedConversationId} 
+            selectedConversationId={selectedConversationId} 
+          />
         </div>
-        
-        {/* Main Chat Panel */}
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full w-full">
           {selectedConversationId ? (
-            <MainChatPanel conversationId={selectedConversationId} />
+            <MainChatPanel conversationId={selectedConversationId} userType={userType} />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500">
               Select a conversation to start chatting

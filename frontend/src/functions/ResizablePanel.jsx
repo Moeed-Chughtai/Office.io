@@ -11,9 +11,12 @@ const ResizablePanel = ({ children }) => {
   };
 
   const handleMouseMove = (e) => {
+    e.preventDefault();
     if (resizableRef.current) {
       const newWidth = e.clientX - resizableRef.current.getBoundingClientRect().left;
-      setWidth(newWidth);
+      if (newWidth >= 200 && newWidth <= 500) { // Set min and max width
+        setWidth(newWidth);
+      }
     }
   };
 
@@ -23,15 +26,15 @@ const ResizablePanel = ({ children }) => {
   };
 
   return (
-    <div className="flex h-full">
-      <div ref={resizableRef} style={{ width }} className="relative">
+    <div className="flex h-full w-full">
+      <div ref={resizableRef} style={{ width }} className="relative h-full">
         {children[0]}
         <div
-          className="absolute top-0 right-0 h-full w-2 cursor-col-resize bg-gray-200"
+          className="absolute top-0 right-0 h-full w-2 cursor-col-resize bg-gray-400 hover:bg-gray-600"
           onMouseDown={handleMouseDown}
         />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 h-full">
         {children[1]}
       </div>
     </div>

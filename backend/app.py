@@ -3,16 +3,15 @@ from flask_cors import CORS
 import json
 import os
 
-
 app = Flask(__name__)
 CORS(app)
 
 # Paths to JSON files
 CONVERSATIONS_FILE = 'data/conversations.json'
 MESSAGES_FILE = 'data/messages.json'
+USER_FILE = 'data/user.json'
 
 
-# Utility functions to load and save JSON data
 def load_data(file_path):
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
@@ -32,10 +31,21 @@ def get_conversations():
     return jsonify(list(conversations.values()))
 
 
+# Route to get the current user information
+@app.route('/user', methods=['GET'])
+def get_user():
+    user = load_data(USER_FILE)
+    return jsonify(user)
+
+
 # Route to get messages for a specific conversation
 @app.route('/conversations/<conversation_id>/messages', methods=['GET'])
 def get_messages(conversation_id):
     messages = load_data(MESSAGES_FILE).get(conversation_id, [])
+    user = load_data(USER_FILE)
+    for msg in messages:
+        # Mark messages from the current user for frontend display
+        msg['isCurrentUser'] = (msg['senderId'] == user['userId'])
     return jsonify(messages)
 
 
@@ -45,7 +55,6 @@ def add_message(conversation_id):
     message_data = request.json
     messages = load_data(MESSAGES_FILE)
 
-    # Add the new message to the conversation
     new_message = {
         "text": message_data.get("text"),
         "senderId": message_data.get("senderId"),
@@ -68,9 +77,8 @@ def add_message(conversation_id):
 
 
 if __name__ == '__main__':
-    # Ensure data directory and files exist
     os.makedirs('data', exist_ok=True)
-    for file_name in [CONVERSATIONS_FILE, MESSAGES_FILE]:
+    for file_name in [CONVERSATIONS_FILE, MESSAGES_FILE, USER_FILE]:
         if not os.path.exists(file_name):
             with open(file_name, 'w') as f:
                 json.dump({}, f)

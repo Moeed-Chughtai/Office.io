@@ -3,10 +3,23 @@ import React, { useEffect, useState } from 'react';
 const MainChatPanel = ({ conversationId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const senderId = "currentUserId";  // Replace with actual user ID if available
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    // Fetch messages for the selected conversation
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/user`);
+        const data = await response.json();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
     const fetchMessages = async () => {
       if (conversationId) {
         try {
@@ -23,15 +36,14 @@ const MainChatPanel = ({ conversationId }) => {
   }, [conversationId]);
 
   const sendMessage = async () => {
-    if (newMessage.trim()) {
+    if (newMessage.trim() && currentUser) {
       const message = {
         text: newMessage,
-        senderId,
+        senderId: currentUser.userId,
         timestamp: new Date().toISOString(),
       };
 
       try {
-        // Send the new message to the backend
         const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`, {
           method: 'POST',
           headers: {
@@ -41,9 +53,8 @@ const MainChatPanel = ({ conversationId }) => {
         });
 
         if (response.ok) {
-          // Update local messages state after successful POST
-          setMessages((prevMessages) => [...prevMessages, message]);
-          setNewMessage(''); // Clear input field
+          setMessages((prevMessages) => [...prevMessages, { ...message, isCurrentUser: true }]);
+          setNewMessage('');
         } else {
           console.error('Failed to send message');
         }
@@ -55,10 +66,14 @@ const MainChatPanel = ({ conversationId }) => {
 
   return (
     <div className="flex flex-col h-full p-4">
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto space-y-3">
         {messages.map((msg, index) => (
-          <div key={index} className={`p-2 ${msg.senderId === senderId ? 'text-right' : 'text-left'}`}>
-            <div className={`inline-block p-2 rounded-lg ${msg.senderId === senderId ? 'bg-blue-200' : 'bg-gray-200'}`}>
+          <div key={index} className={`p-2 ${msg.isCurrentUser ? 'text-right' : 'text-left'}`}>
+            <div
+              className={`inline-block p-2 rounded-lg ${
+                msg.isCurrentUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+              }`}
+            >
               {msg.text}
             </div>
           </div>
