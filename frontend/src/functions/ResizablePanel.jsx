@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 const ResizablePanel = ({ children }) => {
-  const [width, setWidth] = useState(300); // Initial width of the conversation list
+  const [width, setWidth] = useState(500); // Initial width of the conversation list
   const resizableRef = useRef(null);
 
   const handleMouseDown = (e) => {
@@ -14,9 +14,7 @@ const ResizablePanel = ({ children }) => {
     e.preventDefault();
     if (resizableRef.current) {
       const newWidth = e.clientX - resizableRef.current.getBoundingClientRect().left;
-      if (newWidth >= 200 && newWidth <= 500) { // Set min and max width
-        setWidth(newWidth);
-      }
+      setWidth(newWidth);
     }
   };
 
@@ -26,15 +24,15 @@ const ResizablePanel = ({ children }) => {
   };
 
   return (
-    <div className="flex h-full w-full">
-      <div ref={resizableRef} style={{ width }} className="relative h-full">
+    <div className="flex h-full">
+      <div ref={resizableRef} style={{ width }} className="relative">
         {children[0]}
         <div
-          className="absolute top-0 right-0 h-full w-2 cursor-col-resize bg-gray-400 hover:bg-gray-600"
+          className="absolute top-0 right-0 h-full w-2 cursor-col-resize bg-gray-200"
           onMouseDown={handleMouseDown}
         />
       </div>
-      <div className="flex-1 h-full">
+      <div className="flex-1">
         {children[1]}
       </div>
     </div>
