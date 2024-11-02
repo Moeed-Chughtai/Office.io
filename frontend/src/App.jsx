@@ -7,7 +7,6 @@ import Navbar from './components/Navbar.jsx';
 import LogIn from './pages/LogIn.jsx';
 
 function App() {
-
   return (
     <>
       <BrowserRouter>
