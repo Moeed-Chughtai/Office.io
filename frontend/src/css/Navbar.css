@@ -31,7 +31,7 @@ nav .animation {
     height: 100%;
     top: 0;
     z-index: 0;
-    transition: all .5s ease 0s;
+    transition: all .3s ease 0s;
     border-radius: 8px;
 }
 
@@ -55,31 +55,31 @@ nav .animation {
     width: 120px;
 }
 
-nav .start-home, .navbar-item:nth-child(1):hover~.animation {
+nav .navbar-item:nth-child(1):hover~.animation {
     width: 120px;
     left: 0;
     background-color: #1abc9c;
 }
 
-nav .start-about, .navbar-item:nth-child(2):hover~.animation {
+nav .navbar-item:nth-child(2):hover~.animation {
     width: 120px;
     left: 120px;
     background-color: #e74c3c;
 }
 
-nav .start-blog, .navbar-item:nth-child(3):hover~.animation {
+nav .navbar-item:nth-child(3):hover~.animation {
     width: 120px;
     left: 240px;
     background-color: #3498db;
 }
 
-nav .start-portefolio, .navbar-item:nth-child(4):hover~.animation {
+nav .navbar-item:nth-child(4):hover~.animation {
     width: 120px;
     left: 360px;
     background-color: #E04678;
 }
 
-nav .start-contact, .navbar-item:nth-child(5):hover~.animation {
+nav .navbar-item:nth-child(5):hover~.animation {
     width: 120px;
     left: 480px;
     background-color: #e67e22;
@@ -87,4 +87,29 @@ nav .start-contact, .navbar-item:nth-child(5):hover~.animation {
 
 span {
     color: #2BD6B4;
+}
+
+
+.navbar-item.active {
+    border-radius: 8px;
+}
+
+.navbar-item:nth-child(1).active {
+    background-color: #1abc9c;
+}
+
+.navbar-item:nth-child(2).active {
+    background-color: #e74c3c;
+}
+
+.navbar-item:nth-child(3).active {
+    background-color: #3498db;
+}
+
+.navbar-item:nth-child(4).active {
+    background-color: #E04678;
+}
+
+.navbar-item:nth-child(5).active {
+    background-color: #e67e22;
 }
