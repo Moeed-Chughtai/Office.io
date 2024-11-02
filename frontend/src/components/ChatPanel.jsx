@@ -3,7 +3,6 @@ import React from 'react';
 const ChatPanel = () => {
   return (
     <div className="flex flex-col h-full">
-      {/* Chat Header */}
       <div className="p-4 border-b border-gray-200 flex items-center space-x-3">
         <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
         <div>
@@ -11,13 +10,9 @@ const ChatPanel = () => {
           <div className="text-sm text-gray-500">Online</div>
         </div>
       </div>
-
-      {/* Message History */}
       <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50">
         <div className="text-center text-gray-400">No messages yet</div>
       </div>
-
-      {/* Message Input */}
       <div className="p-4 border-t border-gray-200 flex items-center space-x-2">
         <input
           type="text"
