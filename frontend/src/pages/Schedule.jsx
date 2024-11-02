@@ -1,12 +1,14 @@
 import Navbar from '../components/Navbar.jsx';
+import Scheduler from '../components/Scheduler.jsx';
 
-const Schdeule = () => {
+const Schedule = () => {
 
     return (
         <>
             <Navbar />
+            <Scheduler />
         </>
     );
 }
 
-export default Schdeule;
+export default Schedule;

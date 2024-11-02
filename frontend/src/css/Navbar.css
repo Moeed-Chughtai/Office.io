@@ -1,9 +1,9 @@
 nav {
-    margin: 27px auto 0;
+    margin: 27px auto;
     position: relative;
     width: 600px;
     height: 50px;
-    background-color: #614879;
+    background-color: white;
     border-radius: 8px;
     font-size: 0;
 }
@@ -18,7 +18,7 @@ nav .navbar-item {
     text-decoration: none;
     text-transform: uppercase;
     text-align: center;
-    color: white;
+    color: #614879;
     cursor: pointer;
 }
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Schdeule from './pages/Schedule.jsx';
+import Navbar from './components/Navbar.jsx';
 
 function App() {
 
