@@ -27,8 +27,8 @@ function LogIn() {
     <div className="h-screen overflow-hidden">
       <Navbar />
       <div className="flex items-center justify-center h-[calc(100vh-27px)] bg-gray-100">
-        <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">LOG IN</h2>
+        <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-6 text-center font-uniform">LOG IN</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
@@ -59,7 +59,7 @@ function LogIn() {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                className="bg-purple-700 hover:bg-purple-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Log In
               </button>
             </div>

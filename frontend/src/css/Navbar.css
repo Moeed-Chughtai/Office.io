@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'MagnumSans';
+    src: url('../assets/MagnumSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 nav {
     margin: 27px auto;
     position: relative;
@@ -20,6 +27,7 @@ nav .navbar-item {
     text-align: center;
     color: #614879;
     cursor: pointer;
+    font-family: 'MagnumSans', sans-serif;
 }
 
 nav .navbar-item:hover {
