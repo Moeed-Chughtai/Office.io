@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 const MainChatPanel = ({ conversationId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const senderId = "currentUserId";  // Replace with the actual user ID if available
+  const senderId = "currentUserId";  // Replace with actual user ID if available
 
   useEffect(() => {
-    // Fetch messages from the Flask backend for the selected conversation
+    // Fetch messages for the selected conversation
     const fetchMessages = async () => {
       if (conversationId) {
         try {
@@ -31,7 +31,7 @@ const MainChatPanel = ({ conversationId }) => {
       };
 
       try {
-        // Send message to the backend
+        // Send the new message to the backend
         const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`, {
           method: 'POST',
           headers: {
@@ -41,7 +41,7 @@ const MainChatPanel = ({ conversationId }) => {
         });
 
         if (response.ok) {
-          // Update local message list after successful POST request
+          // Update local messages state after successful POST
           setMessages((prevMessages) => [...prevMessages, message]);
           setNewMessage(''); // Clear input field
         } else {

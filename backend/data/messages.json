@@ -1,0 +1,63 @@
+{
+    "1": [
+        {
+            "text": "Hey Bob!",
+            "senderId": "Alice",
+            "timestamp": "2023-11-01T09:50:00Z"
+        },
+        {
+            "text": "Hey Alice, how are you?",
+            "senderId": "Bob",
+            "timestamp": "2023-11-01T09:55:00Z"
+        },
+        {
+            "text": "How's it going, Bob?",
+            "senderId": "Alice",
+            "timestamp": "2023-11-01T10:00:00Z"
+        },
+        {
+            "text": "hi",
+            "senderId": "currentUserId",
+            "timestamp": "2024-11-02T16:03:15.174Z"
+        },
+        {
+            "text": "yes",
+            "senderId": "currentUserId",
+            "timestamp": "2024-11-02T16:03:20.804Z"
+        }
+    ],
+    "2": [
+        {
+            "text": "Hey Charlie, are we still on for the meeting?",
+            "senderId": "Alice",
+            "timestamp": "2023-11-01T10:01:00Z"
+        },
+        {
+            "text": "Yes, see you there!",
+            "senderId": "Charlie",
+            "timestamp": "2023-11-01T10:05:00Z"
+        }
+    ],
+    "3": [
+        {
+            "text": "Just wanted to confirm the project timeline.",
+            "senderId": "Alice",
+            "timestamp": "2023-11-01T10:08:00Z"
+        },
+        {
+            "text": "Everything is on track, Alice!",
+            "senderId": "David",
+            "timestamp": "2023-11-01T10:09:00Z"
+        },
+        {
+            "text": "Thanks for the update!",
+            "senderId": "Alice",
+            "timestamp": "2023-11-01T10:10:00Z"
+        },
+        {
+            "text": "fdger",
+            "senderId": "currentUserId",
+            "timestamp": "2024-11-02T16:02:40.841Z"
+        }
+    ]
+}

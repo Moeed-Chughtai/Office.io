@@ -1,0 +1,29 @@
+{
+    "1": {
+        "id": "1",
+        "participants": [
+            "Alice",
+            "Bob"
+        ],
+        "lastMessage": "yes",
+        "lastMessageTimestamp": "2023-11-01T10:00:00Z"
+    },
+    "2": {
+        "id": "2",
+        "participants": [
+            "Alice",
+            "Charlie"
+        ],
+        "lastMessage": "See you at the meeting!",
+        "lastMessageTimestamp": "2023-11-01T10:05:00Z"
+    },
+    "3": {
+        "id": "3",
+        "participants": [
+            "Alice",
+            "David"
+        ],
+        "lastMessage": "fdger",
+        "lastMessageTimestamp": "2023-11-01T10:10:00Z"
+    }
+}
