@@ -39,6 +39,23 @@ def save_data(file_path, data):
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
 
+# Route to handle login and save user data
+@app.route('/login', methods=['POST'])
+def login():
+    user_data = request.json
+    user = {
+        "userId": user_data.get("username"),
+        "name": f"User {user_data.get('username')}"
+    }
+    save_data(USER_FILE, user)
+    return jsonify(user), 201
+
+@app.route('/conversations/<conversation_id>', methods=['GET'])
+def get_conversation(conversation_id):
+    conversations = load_data(CONVERSATIONS_FILE)
+    conversation = conversations.get(conversation_id, {})
+    return jsonify(conversation)
+
 # Route to get all conversations
 @app.route('/conversations', methods=['GET'])
 def get_conversations():
