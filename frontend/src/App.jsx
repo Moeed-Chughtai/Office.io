@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import Navbar from './components/navbar'
+import { useState } from 'react';
+import Navbar from './components/Navbar.jsx';
 
 function App() {
 
@@ -11,4 +11,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
