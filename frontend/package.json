@@ -16,11 +16,7 @@
     "@mui/material": "^6.1.6",
     "@react-three/drei": "^9.115.0",
     "@react-three/fiber": "^8.17.10",
-<<<<<<< HEAD
-=======
     "axios": "^1.7.7",
->>>>>>> 6e0748ae9e3ed833119f2c3a38df4a6371e2736c
-    "firebase": "^11.0.1",
     "moment": "^2.30.1",
     "react": "^18.3.1",
     "react-big-calendar": "^1.15.0",

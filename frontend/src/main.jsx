@@ -9,6 +9,6 @@ import Chatbot from './components/Chatbot.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Chatbot />
+    <App />
   </StrictMode>,
 )
