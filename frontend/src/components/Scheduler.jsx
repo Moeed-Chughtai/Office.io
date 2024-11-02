@@ -123,7 +123,7 @@ const Scheduler = () => {
   );
 
   return (
-    <div style={{ height: '80vh', padding: '2rem', backgroundColor: 'white', margin: '2rem', borderRadius: '8px' }}>
+    <div style={{ padding: '2rem', backgroundColor: 'white', margin: '2rem', borderRadius: '8px' }}>
       <Calendar
         selectable
         localizer={localizer}

@@ -1,4 +1,5 @@
 .logo {
-    position: fixed;
-    top: 0px;
+    position: absolute;
+    display: flex;
+    left: 20px;
 }
