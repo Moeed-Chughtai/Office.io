@@ -5,6 +5,6 @@ import Messaging from './components/Messaging.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Messaging />
+    <App />
   </StrictMode>,
 )

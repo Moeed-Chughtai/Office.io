@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import logo from '../assets/atom-logo.CV42YAKh.svg';
 import '../css/Navbar.css';
+import { Link } from 'react-router-dom';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -22,11 +23,11 @@ const ResponsiveAppBar = () => {
 
   return (
     <nav>
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Blog</a>
-      <a href="#">Portefolio</a>
-      <a href="#">Contact</a>
+      <Link to='/' className='navbar-item'>Home</Link>
+      <Link to='/schedule' className='navbar-item'>Schedule</Link>
+      <Link to='/' className='navbar-item'>Message</Link>
+      <Link to='/' className='navbar-item'>Contact</Link>
+      <Link to='/' className='navbar-item'>Sign Up</Link>
       <div class="animation start-home"></div>
     </nav>
   );
