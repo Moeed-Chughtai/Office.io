@@ -1,6 +1,4 @@
-// src/functions/PeopleInteraction.js
 import React, { useState } from 'react';
-
 function UserPopup({ name, summary, onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
@@ -25,11 +23,36 @@ function UserPopup({ name, summary, onClose }) {
     </div>
   );
 }
-
-function PeopleInteraction({ name, summary, onClose }) {
+function App() {
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({ name: '', summary: '' });
+  const handleClick = (name, summary) => {
+    setPopupData({ name, summary });
+    setShowPopup(true);
+  };
+  const handleClose = () => {
+    setShowPopup(false);
+  };
   return (
-    <UserPopup name={name} summary={summary} onClose={onClose} />
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div>
+        {/* Replace these with actual clickable elements that trigger the popup */}
+        <button
+          onClick={() => handleClick('John Doe', 'John is currently working on a new React project to enhance frontend development skills.')}
+          className="text-blue-500 underline"
+        >
+          Click to see details of John Doe
+        </button>
+      </div>
+      {/* Popup */}
+      {showPopup && (
+        <UserPopup
+          name={popupData.name}
+          summary={popupData.summary}
+          onClose={handleClose}
+        />
+      )}
+    </div>
   );
 }
-
-export default PeopleInteraction;
+export default App;
