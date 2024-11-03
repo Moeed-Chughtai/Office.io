@@ -134,7 +134,7 @@ function Scene(isFirstPerson) {
       <OrbitControls ref={controlsRef} />
 
       {/* Helpers */}
-      <primitive object={new AxesHelper(10)} />
+      {/* <primitive object={new AxesHelper(10)} /> */}
       {/* <primitive object={new GridHelper(50, 50)} /> */}
 
       {/* Additional Chairs and Desks  */}
