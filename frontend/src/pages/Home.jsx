@@ -5,37 +5,52 @@ import Scene from '../components/3d/Scene.jsx';
 import { Canvas } from '@react-three/fiber';
 import ChatPopup from '../components/ChatPopup.jsx';
 import { useState } from 'react';
-import PeopleInteraction from '../functions/PeopleInteraction.jsx';
+import UserPopup from '../components/UserPopup.jsx'; // Import UserPopup
 import SchedulePopup from '../components/SchedulePopup.jsx';
 
 const Home = () => {
-
   // first person view
   const [isFirstPerson, setIsFirstPerson] = useState(false);
   const toggleFirstPerson = () => {
     setIsFirstPerson((prev) => !prev);
-    console.log("Toggled to:", !isFirstPerson); // Log toggle state
+    console.log("Toggled to:", !isFirstPerson);
   };
 
-  // show people interaction pop up
-  const [showPeopleInteraction, setShowPeopleInteraction] = useState(false);
-  const handleLogoClick = () => {
-    setShowPeopleInteraction(true);
-  };
-  const handleClosePeopleInteraction = () => {
-    setShowPeopleInteraction(false);
+  // Popup state
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupData, setPopupData] = useState({ name: '', summary: '' });
+
+  // Function to handle Avatar2 clicks from Scene
+  const handleAvatarClick = (name, summary) => {
+    setPopupData({ name, summary });
+    setShowPopup(true);
   };
 
-    return (
-        <>
-            <Navbar />
-            <Canvas style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
-                <Scene className='bg-linear-gradient'/>
-            </Canvas>
-            <ChatPopup />
-            <SchedulePopup />
-        </>
-    );
+  // Function to close the popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  return (
+    <>
+      <Navbar />
+      <Canvas style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
+        <Scene isFirstPerson={isFirstPerson} onAvatarClick={handleAvatarClick} /> {/* Pass handler to Scene */}
+      </Canvas>
+
+      {/* Conditionally render UserPopup outside of Canvas */}
+      {showPopup && (
+        <UserPopup
+          name={popupData.name}
+          summary={popupData.summary}
+          onClose={handleClosePopup}
+        />
+      )}
+
+      <ChatPopup />
+      <SchedulePopup />
+    </>
+  );
 }
 
 export default Home;
