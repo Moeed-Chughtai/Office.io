@@ -6,10 +6,13 @@ const MainChatPanel = ({ conversationId }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [conversation, setConversation] = useState(null);
 
+  // Fetch user information
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/user`);
+        if (!response.ok) throw new Error(`User fetch failed with status ${response.status}`);
+        
         const data = await response.json();
         setCurrentUser(data);
       } catch (error) {
@@ -20,11 +23,14 @@ const MainChatPanel = ({ conversationId }) => {
     fetchUser();
   }, []);
 
+  // Fetch conversation details
   useEffect(() => {
     const fetchConversation = async () => {
       if (conversationId) {
         try {
           const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}`);
+          if (!response.ok) throw new Error(`Conversation fetch failed with status ${response.status}`);
+          
           const data = await response.json();
           setConversation(data);
         } catch (error) {
@@ -36,11 +42,14 @@ const MainChatPanel = ({ conversationId }) => {
     fetchConversation();
   }, [conversationId]);
 
+  // Fetch messages for the conversation
   useEffect(() => {
     const fetchMessages = async () => {
       if (conversationId) {
         try {
           const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`);
+          if (!response.ok) throw new Error(`Messages fetch failed with status ${response.status}`);
+          
           const data = await response.json();
           setMessages(data);
         } catch (error) {
@@ -52,6 +61,7 @@ const MainChatPanel = ({ conversationId }) => {
     fetchMessages();
   }, [conversationId]);
 
+  // Send a new message
   const sendMessage = async () => {
     if (newMessage.trim() && currentUser) {
       const message = {
@@ -69,19 +79,22 @@ const MainChatPanel = ({ conversationId }) => {
           body: JSON.stringify(message),
         });
 
-        if (response.ok) {
-          // Directly update the messages state to include the new message
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { ...message, isCurrentUser: true },
-          ]);
-          setNewMessage(''); // Clear the input field after sending
-        } else {
-          console.error('Failed to send message');
-        }
+        if (!response.ok) throw new Error(`Message send failed with status ${response.status}`);
+        
+        const newMessageData = await response.json();
+        
+        // Immediately update messages with the new message
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { ...newMessageData, isCurrentUser: true },
+        ]);
+
+        setNewMessage(''); // Clear input field
       } catch (error) {
         console.error('Error sending message:', error);
       }
+    } else {
+      console.warn("Message is empty or user is not set");
     }
   };
 

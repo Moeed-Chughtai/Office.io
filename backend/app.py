@@ -50,11 +50,24 @@ def login():
     save_data(USER_FILE, user)
     return jsonify(user), 201
 
+# Route to retrieve the current user data
+@app.route('/user', methods=['GET'])
+def get_user():
+    user = load_data(USER_FILE)
+    return jsonify(user)
+
 # Route to fetch all conversations
 @app.route('/conversations', methods=['GET'])
 def get_all_conversations():
     conversations = load_data(CONVERSATIONS_FILE)
     return jsonify(list(conversations.values())), 200
+
+# Route to retrieve a single conversation by its ID
+@app.route('/conversations/<conversation_id>', methods=['GET'])
+def get_conversation(conversation_id):
+    conversations = load_data(CONVERSATIONS_FILE)
+    conversation = conversations.get(conversation_id, {})
+    return jsonify(conversation)
 
 # Route to fetch messages for a specific conversation
 @app.route('/conversations/<conversation_id>/messages', methods=['GET'])
