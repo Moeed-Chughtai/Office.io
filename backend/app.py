@@ -7,7 +7,6 @@ import faiss
 import numpy as np
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from sentence_transformers import SentenceTransformer
-import uuid
 
 app = Flask(__name__)
 CORS(app)
@@ -216,7 +215,7 @@ def add_event():
 
     # Add new event with a unique ID (based on existing number of events)
     new_event = {
-        "id": str(uuid.uuid4()),
+        "id": len(events) + 1,
         "title": event_data.get("title"),
         "start": event_data.get("start"),
         "end": event_data.get("end"),
