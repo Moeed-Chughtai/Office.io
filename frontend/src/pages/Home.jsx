@@ -32,17 +32,26 @@ const Home = () => {
     setShowPopup(false);
   };
 
-    return (
-        <>
-            <Navbar />
-            <Canvas style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
-                <Scene className='bg-linear-gradient'/>
-            </Canvas>
-            <ChatPopup />
-            <SchedulePopup />
-            <AnnouncementPopup />
-        </>
-    );
+  return (
+    <>
+      <Navbar />
+      <Canvas shadows style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
+        <Scene isFirstPerson={isFirstPerson} onAvatarClick={handleAvatarClick} /> {/* Pass handler to Scene */}
+      </Canvas>
+
+      {/* Conditionally render UserPopup outside of Canvas */}
+      {showPopup && (
+        <UserPopup
+          name={popupData.name}
+          summary={popupData.summary}
+          onClose={handleClosePopup}
+        />
+      )}
+
+      <ChatPopup />
+      <SchedulePopup />
+    </>
+  );
 }
 
 export default Home;

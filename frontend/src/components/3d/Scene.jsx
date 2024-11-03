@@ -11,6 +11,7 @@ import { Sofa } from './Sofa';
 import { LoungeArea } from './LoungeArea';
 import { PoolTable } from './PoolTable';
 import Avatar2 from './Avatar2';
+import OfficeLighting from './OfficeLighting';
 
 function Scene({ isFirstPerson, onAvatarClick }) {
   const avatarRef = useRef();
@@ -107,8 +108,8 @@ function Scene({ isFirstPerson, onAvatarClick }) {
       <TallOfficePlant position={[-9, 0, 12]} scale={1.5} />
 
       {/* Displays */}
-      <OfficeDisplay position={[-6, 3, 9.5]} scale={4} />
-      <OfficeDisplay position={[6, 3, 9.5]} scale={4} />
+      <OfficeDisplay receiveShadow castShadow position={[-6, 3, 9.5]} scale={4} />
+      <OfficeDisplay receiveShadow castShadow position={[6, 3, 9.5]} scale={4} />
 
       {/* Conference Seating */}
       <ConferenceSeating position={[0, 0, 5]} scale={1.5} />
@@ -142,6 +143,25 @@ function Scene({ isFirstPerson, onAvatarClick }) {
         <Avatar ref={avatarRef} isFirstPerson={isFirstPerson} />
       </Suspense>
       <OrbitControls ref={controlsRef} />
+
+
+      <SmallWall position={[-10, 2.5, 6]} args={[0.2, 5, 8]} />
+      <SmallWall position={[-6, 2.5, 10]} args={[8, 5, 0.2]} />
+
+
+      <SmallWall position={[10, 2.5, 6]} args={[0.2, 5, 8]} />
+      <SmallWall position={[6, 2.5, 10]} args={[8, 5, 0.2]} />
+
+      <SmallWall position={[10, 2.5, -2]} args={[0.2, 5, 8]} />
+      <SmallWall position={[4, 2.5, -10]} args={[8, 5, 0.2]} />
+
+      <SmallWall position={[-10, 2.5, -2]} args={[0.2, 5, 8]} />
+      <SmallWall position={[-4, 2.5, -10]} args={[8, 5, 0.2]} />
+
+      <OfficeLighting/>
+
+      <OfficeDisplay receiveShadow castShadow position={[-12.5, 3, -30]} scale={4} />
+      <OfficeDisplay receiveShadow castShadow position={[12.5, 3, -30]} scale={4} />
 
       {/* Avatar2 with click handler passed as prop */}
       <Avatar2 name="Sophia Harper" summary="Working on integrating a machine learning model into a customer support platform to automatically classify and prioritize support tickets based on urgency and topic" 
