@@ -102,7 +102,8 @@ function Scene({ isFirstPerson, onAvatarClick }) {
       <OrbitControls ref={controlsRef} />
 
       {/* Avatar2 with click handler passed as prop */}
-      <Avatar2 name="John Doe" summary="Software Engineer" onAvatarClick={onAvatarClick} />
+      <Avatar2 name="Sophia Harper" summary="Working on integrating a machine learning model into a customer support platform to automatically classify and prioritize support tickets based on urgency and topic" 
+      onAvatarClick={onAvatarClick} />
     </>
   );
 }
