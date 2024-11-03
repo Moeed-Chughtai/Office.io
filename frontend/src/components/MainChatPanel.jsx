@@ -51,7 +51,14 @@ const MainChatPanel = ({ conversationId }) => {
           if (!response.ok) throw new Error(`Messages fetch failed with status ${response.status}`);
           
           const data = await response.json();
-          setMessages(data);
+
+          // Mark messages as belonging to the current user if the senderId matches
+          setMessages(
+            data.map((msg) => ({
+              ...msg,
+              isCurrentUser: msg.senderId === currentUser?.userId,
+            }))
+          );
         } catch (error) {
           console.error('Error fetching messages:', error);
         }
@@ -59,7 +66,7 @@ const MainChatPanel = ({ conversationId }) => {
     };
 
     fetchMessages();
-  }, [conversationId]);
+  }, [conversationId, currentUser]);
 
   // Send a new message
   const sendMessage = async () => {
@@ -107,10 +114,15 @@ const MainChatPanel = ({ conversationId }) => {
       )}
       <div className="flex-1 overflow-y-auto space-y-3">
         {messages.map((msg, index) => (
-          <div key={index} className={`p-2 ${msg.isCurrentUser ? 'text-right' : 'text-left'}`}>
+          <div
+            key={index}
+            className={`p-2 ${msg.isCurrentUser ? 'text-right' : 'text-left'}`}
+          >
             <div
               className={`inline-block p-2 rounded-lg ${
-                msg.isCurrentUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                msg.isCurrentUser
+                  ? 'bg-blue-500 text-white ml-auto' // Right-aligned message styling
+                  : 'bg-gray-200 text-gray-800 mr-auto' // Left-aligned message styling
               }`}
             >
               {msg.text}
