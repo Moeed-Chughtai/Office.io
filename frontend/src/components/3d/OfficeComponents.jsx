@@ -1,8 +1,10 @@
 // src/OfficeComponents.js
 import React,{useState, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTexture } from '@react-three/drei';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import BoardInteraction from '../../functions/BoardInteraction';
 
 // src/components/3d/Wall.js
 
@@ -223,8 +225,10 @@ export function TallOfficePlant({ position = [0, 0, 0], scale = 1 }) {
 
 
 export function OfficeDisplay({ position = [0, 0, 0], scale = 1 }) {
+  const navigate = useNavigate();
+  const handleClick = BoardInteraction();
   return (
-    <group position={position} scale={scale}>
+    <group position={position} scale={scale} onClick={handleClick}>
       {/* Screen Frame */}
       <mesh>
         <boxGeometry args={[1.8, 1, 0.1]} />  {/* Outer frame size */}
