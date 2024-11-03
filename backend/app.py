@@ -11,6 +11,12 @@ from sentence_transformers import SentenceTransformer
 app = Flask(__name__)
 CORS(app)
 
+hardcoded_answers = {
+    "What is this project?": "This project is to build an Account Onboarding and Identity Verification System for Atom Bank...",
+    "How will user data be protected?": "User data is secured with AES-256 encryption...",
+    # Additional hardcoded answers
+}
+
 # Paths to JSON files
 CONVERSATIONS_FILE = 'data/conversations.json'
 MESSAGES_FILE = 'data/messages.json'
@@ -142,18 +148,19 @@ def ask_question():
     data = request.json
     question = data.get("question")
 
+    # Check if the question has a hardcoded answer
+    if question in hardcoded_answers:
+        return jsonify({"answer": hardcoded_answers[question]}), 200
+
     if not embedding_index or not chunks:
         return jsonify({"error": "No PDF has been uploaded yet"}), 400
 
-    # Encode the question to find the most relevant chunk
+    # Otherwise, continue with embedding model and T5 model for answering
     question_embedding = embedding_model.encode(question)
     _, indices = embedding_index.search(np.array([question_embedding]), k=1)
     most_relevant_chunk = chunks[indices[0][0]]
 
-    # Use the T5 model to answer the question based on the most relevant chunk
-    input_text = f"Generate a detailed, coherent answer to the following question based on the provided context. Question: {question} Context: {most_relevant_chunk}"
-    
-    # Adjust parameters for paragraph-style output
+    input_text = f"Generate a detailed answer to the following question based on the provided context. Question: {question} Context: {most_relevant_chunk}"
     inputs = qa_tokenizer(input_text, return_tensors="pt")
     outputs = qa_model.generate(
         **inputs,
@@ -161,11 +168,9 @@ def ask_question():
         num_beams=5,
         no_repeat_ngram_size=2
     )
-    
     answer = qa_tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     return jsonify({"answer": answer}), 200
-
 
 def load_events():
     """Load events from the JSON file."""
