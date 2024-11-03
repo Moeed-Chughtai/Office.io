@@ -12,9 +12,14 @@ app = Flask(__name__)
 CORS(app)
 
 hardcoded_answers = {
-    "What is this project?": "This project is to build an Account Onboarding and Identity Verification System for Atom Bank...",
-    "How will user data be protected?": "User data is secured with AES-256 encryption...",
-    # Additional hardcoded answers
+    "What is this project?":
+      "This project is to build an Account Onboarding and Identity Verification System for Atom Bank. It aims to streamline the account creation process with secure, user-friendly features that meet regulatory standards like KYC and AML, while reducing onboarding time to under 10 minutes.",
+    "How will user data be protected?":
+      "User data is secured with AES-256 encryption for both storage and transfer, multi-factor authentication (MFA), and GDPR-compliant handling, ensuring robust security throughout the onboarding process.",
+    "Who is the best to contact for assistance with an API issue?":
+      "For debugging API issues, the primary point of contact would be the Backend Tech Lead. They oversee the server-side code and API development and can provide guidance on troubleshooting, best practices, and debugging strategies. If the issue involves integration with frontend components, the Frontend Tech Lead can also offer insights into client-server communication aspects.",
+    "What are the core technologies?":
+      "The team primarily uses React for the frontend, Node.js for the backend, PostgreSQL and MongoDB for databases, and AWS for infrastructure, with containerization handled by Docker and Kubernetes."
 }
 
 # Paths to JSON files
