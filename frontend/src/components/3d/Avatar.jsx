@@ -1,15 +1,36 @@
-// src/Avatar.js
-import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+// src/components/3d/Avatar.js
+import React, { useRef, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-function Avatar() {
+// import { throttle } from '../../utils/throttle';
+function throttle(func, limit) {
+    let inThrottle;
+    return function (...args) {
+      if (!inThrottle) {
+        func(...args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  }
+
+function Avatar({ isFirstPerson }) {
   const avatarRef = useRef();
+  const { camera } = useThree();
 
   const speed = 0.05;
+  const rotationSpeed = 0.03;
   const keysPressed = useRef({ forward: false, backward: false, left: false, right: false });
 
-  React.useEffect(() => {
+  const logFirstPerson = throttle((mode) => console.log("Avatar: First-person mode:", mode), 1000); // 1 second delay
+
+  useEffect(() => {
+    logFirstPerson(isFirstPerson); // Throttled log for first-person mode
+  }, [isFirstPerson]);
+
+  // Set up event listeners for keyboard controls
+  useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'w') keysPressed.current.forward = true;
       if (event.key === 's') keysPressed.current.backward = true;
@@ -32,28 +53,38 @@ function Avatar() {
     };
   }, []);
 
+  // Update avatar's position and rotation each frame
   useFrame(() => {
     if (avatarRef.current) {
       const position = avatarRef.current.position;
       const rotation = avatarRef.current.rotation;
+      const direction = new THREE.Vector3();
+      const quaternion = new THREE.Quaternion();
 
-      // Determine movement direction and update position
-      let moveX = 0;
-      let moveZ = 0;
+      // Rotate avatar based on left and right input
+      if (keysPressed.current.left) rotation.y += rotationSpeed;
+      if (keysPressed.current.right) rotation.y -= rotationSpeed;
 
-      if (keysPressed.current.forward) moveZ -= speed;
-      if (keysPressed.current.backward) moveZ += speed;
-      if (keysPressed.current.left) moveX -= speed;
-      if (keysPressed.current.right) moveX += speed;
+      // Calculate forward/backward movement relative to the avatar's rotation
+      quaternion.setFromEuler(rotation);
+      direction.set(0, 0, (keysPressed.current.forward ? -1 : 0) + (keysPressed.current.backward ? 1 : 0));
+      direction.applyQuaternion(quaternion);
 
-      // Apply movement
-      position.x += moveX;
-      position.z += moveZ;
+      // Apply movement based on speed
+      position.add(direction.multiplyScalar(speed));
 
-      // Set rotation based on direction
-      if (moveX !== 0 || moveZ !== 0) {
-        rotation.y = Math.atan2(moveX, moveZ); // Calculate angle based on movement direction
-      }
+      // Update camera position and orientation for first-person mode
+
+    //   if (isFirstPerson) {
+    //     camera.position.set(position.x, position.y + 1.5, position.z);
+    //     camera.quaternion.copy(quaternion);
+
+
+    //     // console.log("Camera in first-person mode", camera.position); // Log camera position in first-person
+    //   } else {
+    //     // console.log("Camera in third-person mode"); // Log camera behavior when in third-person
+    //   }
+    
     }
   });
 

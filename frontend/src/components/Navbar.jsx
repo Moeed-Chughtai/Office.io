@@ -3,9 +3,6 @@ import '../css/Navbar.css';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo.jsx';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 const ResponsiveAppBar = () => {
   const [activeItem, setActiveItem] = useState(null);
   const location = useLocation();
@@ -22,7 +19,7 @@ const ResponsiveAppBar = () => {
         <Link to='/schedule' className={`navbar-item ${activeItem === '/schedule' ? 'active' : ''}`}>Schedule</Link>
         <Link to='/messages' className={`navbar-item ${activeItem === '/messages' ? 'active' : ''}`}>Messages</Link>
         <Link to='/' className={`navbar-item ${activeItem === '/jjk' ? 'active' : ''}`}>Contact</Link>
-        <Link to='/login' className={`navbar-item ${activeItem === '/jbjc' ? 'active' : ''}`}>Sign In</Link>
+        <Link to='/login' className={`navbar-item ${activeItem === '/login' ? 'active' : ''}`}>Sign Up</Link>
         <div class="animation"></div>
       </nav>
     </>
