@@ -40,6 +40,7 @@ const Home = () => {
             </Canvas>
             <ChatPopup />
             <SchedulePopup />
+            <AnnouncementPopup />
         </>
     );
 }
