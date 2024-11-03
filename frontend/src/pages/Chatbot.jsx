@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
+import { FaSpinner } from 'react-icons/fa';
 
 const Chatbot = () => {
   const [pdfFile, setPdfFile] = useState(null);
@@ -7,10 +8,9 @@ const Chatbot = () => {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [pdfUploaded, setPdfUploaded] = useState(false);
-  const [questionAsked, setQuestionAsked] = useState(false); // New state to track if a question was asked
-  const [statusMessage, setStatusMessage] = useState(""); // Separate state for status messages
+  const [questionAsked, setQuestionAsked] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
-  // Hardcoded answers
   const hardcodedAnswers = {
     "What is this project?":
       "This project is to build an Account Onboarding and Identity Verification System for Atom Bank. It aims to streamline the account creation process with secure, user-friendly features that meet regulatory standards like KYC and AML, while reducing onboarding time to under 10 minutes.",
@@ -22,27 +22,24 @@ const Chatbot = () => {
       "The team primarily uses React for the frontend, Node.js for the backend, PostgreSQL and MongoDB for databases, and AWS for infrastructure, with containerization handled by Docker and Kubernetes."
   };
 
-  // Handle PDF upload
   const handlePdfUpload = async (event) => {
     const file = event.target.files[0];
     setPdfFile(file);
 
     if (file) {
       setLoading(true);
-      setStatusMessage("Processing PDF..."); // Show processing message
-      setQuestionAsked(false); // Reset question asked status
-      setAnswer(""); // Clear any previous answer
+      setStatusMessage("Processing PDF...");
+      setQuestionAsked(false);
+      setAnswer("");
 
-      // Simulate a 10-second processing delay
       setTimeout(() => {
         setPdfUploaded(true);
         setStatusMessage("PDF uploaded and processed successfully!");
         setLoading(false);
-      }, 10000);
+      }, 4000); // Reduced processing delay for demonstration
     }
   };
 
-  // Handle question submission
   const handleQuestionSubmit = async (event) => {
     event.preventDefault();
     if (!pdfUploaded) {
@@ -51,62 +48,74 @@ const Chatbot = () => {
     }
 
     setLoading(true);
-    setQuestionAsked(true); // Set question asked status to true
-    setStatusMessage(""); // Clear any previous status message
+    setQuestionAsked(true);
+    setStatusMessage("");
 
-    // Simulate a 5-second delay before displaying the answer
     setTimeout(() => {
       const responseAnswer = hardcodedAnswers[question] || "I'm sorry, I don't have an answer for that question.";
       setAnswer(responseAnswer);
       setLoading(false);
-    }, 5000);
+    }, 2000);
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-linear-gradient">
       <Navbar />
-      <div className="max-w-xl mx-auto px-4 py-8 font-sans">
-
+      <div className="max-w-lg mx-auto px-6 py-10">
         {/* PDF Upload Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div className="bg-white p-8 rounded-lg shadow-lg mb-6 relative">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">UPLOAD A PDF DOCUMENT</h2>
           <input
             type="file"
             accept="application/pdf"
             onChange={handlePdfUpload}
-            className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg cursor-pointer focus:outline-none p-2"
+            className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
-          {loading && <p className="text-center text-gray-500 mt-4">{statusMessage}</p>}
-          {!loading && pdfUploaded && <p className="text-center text-green-600 font-semibold mt-4">{statusMessage}</p>}
+          {loading && (
+            <div className="flex items-center justify-center mt-4">
+              <FaSpinner className="animate-spin text-indigo-500 mr-2" />
+              <p className="text-gray-600">{statusMessage}</p>
+            </div>
+          )}
+          {!loading && pdfUploaded && (
+            <p className="text-center text-green-600 font-semibold mt-4">{statusMessage}</p>
+          )}
         </div>
 
         {/* Question Section */}
         {pdfUploaded && (
-          <form onSubmit={handleQuestionSubmit} className="flex flex-col items-center">
-            <label className="w-full">
-              <input
-                type="text"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="Type your question here"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
-              />
-            </label>
+          <form onSubmit={handleQuestionSubmit} className="bg-white p-8 rounded-lg shadow-lg mb-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Ask a Question</h2>
+            <input
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Type your question here..."
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
+            />
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-green-500 text-white font-semibold py-2 rounded-lg ${
-                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
-              }`}
+              className={`w-full py-3 rounded-lg font-semibold text-white ${
+                loading ? "bg-green-300 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+              } transition duration-200`}
             >
-              Ask
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <FaSpinner className="animate-spin mr-2" />
+                  Processing...
+                </div>
+              ) : (
+                "Ask"
+              )}
             </button>
           </form>
         )}
 
         {/* Display Answer */}
         {questionAsked && answer && (
-          <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
-            <strong className="block text-gray-700">Answer:</strong>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <strong className="block text-gray-700 text-lg">Answer:</strong>
             <p className="text-gray-800 mt-2">{answer}</p>
           </div>
         )}
