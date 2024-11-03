@@ -6,7 +6,7 @@ function Messaging() {
   const [selectedConversationId, setSelectedConversationId] = useState(null);
 
   return (
-    <div className="h-screen bg-linear-gradient flex items-center justify-center p-2">
+    <div className=" bg-linear-gradient flex items-center justify-center p-2" style={{height: '680px'}}>
       <div className="bg-white border border-gray-200 rounded-lg h-full w-full max-w-7xl px-1 py-4 flex">
         {/* Sidebar for Conversation List */}
         <div className="bg-white border-r border-gray-200 h-full w-2/5 pr-1">

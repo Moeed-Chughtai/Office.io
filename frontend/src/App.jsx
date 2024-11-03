@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Schedule from './pages/Schedule.jsx';
 import Messages from './pages/Messages.jsx';
-import LogIn from './pages/LogIn.jsx';
+import LogIn from './pages/LogInPage.jsx';
 import Chatbot from './pages/Chatbot.jsx';
 
 function App() {

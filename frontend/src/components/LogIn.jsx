@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from './Navbar';
 
 function LogIn() {
   const [username, setUsername] = useState('');
@@ -25,9 +25,8 @@ function LogIn() {
   };
 
   return (
-    <div className="h-screen bg-custom-gradient">
-      <Navbar/>
-      <div className="flex items-center justify-center h-[calc(100vh-27px)]">
+    <div className="h-screen bg-transparent flex items-center justify-center" style={{height: '680px'}}>
+      <div className="flex items-center justify-center">
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl w-full">
           {/* Left Panel - Login Form */}
           <div className="w-1/2 p-8">
