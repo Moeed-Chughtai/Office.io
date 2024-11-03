@@ -6,6 +6,7 @@ import { Canvas } from '@react-three/fiber';
 import ChatPopup from '../components/ChatPopup.jsx';
 import { useState } from 'react';
 import PeopleInteraction from '../functions/PeopleInteraction.jsx';
+import SchedulePopup from '../components/SchedulePopup.jsx';
 
 const Home = () => {
 
@@ -32,6 +33,7 @@ const Home = () => {
                 <Scene/>
             </Canvas>
             <ChatPopup />
+            <SchedulePopup />
         </>
     );
 }
