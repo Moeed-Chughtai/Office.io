@@ -11,6 +11,8 @@ import {Sofa} from './Sofa';
 import {LoungeArea} from './LoungeArea';
 import {PoolTable} from './PoolTable';
 
+// import {Avatar2} from './Avatar2';
+
 function Scene(isFirstPerson) {
   const avatarRef = useRef();
   const controlsRef = useRef();
@@ -227,7 +229,17 @@ function Scene(isFirstPerson) {
       <Wall position={[0, 2.5, -60]} args={[40, 5, 0.2]} />
 
 
-      <BoardroomTable position={[0, 2.5, -30]} />
+      <BoardroomTable position={[-12.5, 2.5, -40]} />
+      <BoardroomTable position={[12.5, 2.5, -40]} />
+
+      <OfficeDisplay position={[-12.5, 3, -30]} scale={4} />
+      <OfficeDisplay position={[12.5, 3, -30]} scale={4} />
+
+      {/* <Avatar2/> */}
+
+
+
+      {/* <AdjustableWall position={[2, 2.5, -30]} width={15} /> */}
 
 
 
