@@ -25,9 +25,9 @@ function LogIn() {
   };
 
   return (
-    <div className="h-screen bg-transparent flex items-center justify-center" style={{height: '680px'}}>
-      <div className="flex items-center justify-center">
-        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl w-full">
+    <div className="h-screen bg-transparent flex items-center justify-center" style={{ height: '680px' }}>
+      <div className="flex items-center justify-center w-full max-w-3xl"> {/* Increased max width */}
+        <div className="flex bg-white rounded-2xl shadow-lg overflow-hidden w-full"> {/* Set width to full */}
           {/* Left Panel - Login Form */}
           <div className="w-1/2 p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Log In</h2>
