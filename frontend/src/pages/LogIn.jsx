@@ -31,7 +31,7 @@ function LogIn() {
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl w-full">
           {/* Left Panel - Login Form */}
           <div className="w-1/2 p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Sign In</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Log In</h2>
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -72,7 +72,7 @@ function LogIn() {
                 type="submit"
                 className="w-full bg-gradient-to-br from-purple-800 to-purple-500 text-white py-2 rounded-lg hover:bg-purple-800 transition duration-200"
               >
-                Sign In
+                Log In
               </button>
             </form>
           </div>
