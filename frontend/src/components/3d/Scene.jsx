@@ -12,6 +12,7 @@ import { LoungeArea } from './LoungeArea';
 import { PoolTable } from './PoolTable';
 import Avatar2 from './Avatar2';
 import OfficeLighting from './OfficeLighting';
+import Cat from './Cat';
 
 function Scene({ isFirstPerson, onAvatarClick }) {
   const avatarRef = useRef();
@@ -104,7 +105,7 @@ function Scene({ isFirstPerson, onAvatarClick }) {
       </group>
 
       {/* Plants */}
-      <OfficePlant position={[-2, 0, 5]} scale={1.5} />
+      <OfficePlant position={[-10, 0, 15]} scale={1.5} />
       <TallOfficePlant position={[-9, 0, 12]} scale={1.5} />
 
       {/* Displays */}
@@ -163,8 +164,10 @@ function Scene({ isFirstPerson, onAvatarClick }) {
       <OfficeDisplay receiveShadow castShadow position={[-12.5, 3, -30]} scale={4} />
       <OfficeDisplay receiveShadow castShadow position={[12.5, 3, -30]} scale={4} />
 
+      <Cat position={[10, 0, 10]} />
+
       {/* Avatar2 with click handler passed as prop */}
-      <Avatar2 name="Sophia Harper" summary="Working on integrating a machine learning model into a customer support platform to automatically classify and prioritize support tickets based on urgency and topic" 
+      <Avatar2 position={[-20, 2.5, 20]} name="Sophia Harper" summary="Working on integrating a machine learning model into a customer support platform to automatically classify and prioritize support tickets based on urgency and topic" 
       onAvatarClick={onAvatarClick} />
     </>
   );

@@ -236,7 +236,7 @@ export function OfficeDisplay({ position = [0, 0, 0], scale = 1 }) {
       {/* Screen */}
       <mesh position={[0, 0, 0.05]}>
         <boxGeometry args={[1.6, 0.9, 0.02]} />  {/* Slightly smaller than frame */}
-        <meshStandardMaterial color="#000000" emissive="#111111" /> {/* Dark screen with slight emissive light */}
+        <meshStandardMaterial color="#000000" emissive="#444444" emissiveIntensity={2} /> {/* Dark screen with slight emissive light */}
       </mesh>
 
       {/* TV Stand */}
