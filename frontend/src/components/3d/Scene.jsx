@@ -11,7 +11,7 @@ import {Sofa} from './Sofa';
 import {LoungeArea} from './LoungeArea';
 import {PoolTable} from './PoolTable';
 
-// import {Avatar2} from './Avatar2';
+import Avatar2 from './Avatar2';
 
 function Scene(isFirstPerson) {
   const avatarRef = useRef();
@@ -235,7 +235,7 @@ function Scene(isFirstPerson) {
       <OfficeDisplay position={[-12.5, 3, -30]} scale={4} />
       <OfficeDisplay position={[12.5, 3, -30]} scale={4} />
 
-      {/* <Avatar2/> */}
+      <Avatar2/>
 
 
 

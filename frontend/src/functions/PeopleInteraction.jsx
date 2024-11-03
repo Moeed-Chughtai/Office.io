@@ -25,12 +25,10 @@ function UserPopup({ name, summary, onClose }) {
   );
 }
 
-function App() {
+function PeopleInteraction({ name, summary }) {
   const [showPopup, setShowPopup] = useState(false);
-  const [popupData, setPopupData] = useState({ name: '', summary: '' });
 
-  const handleClick = (name, summary) => {
-    setPopupData({ name, summary });
+  const handleClick = () => {
     setShowPopup(true);
   };
 
@@ -41,20 +39,18 @@ function App() {
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <div>
-        {/* Replace these with actual clickable elements that trigger the popup */}
         <button
-          onClick={() => handleClick('John Doe', 'John is currently working on a new React project to enhance frontend development skills.')}
+          onClick={handleClick}
           className="text-blue-500 underline"
         >
-          Click to see details of John Doe
+          Click to see details of {name}
         </button>
       </div>
 
-      {/* Popup */}
       {showPopup && (
         <UserPopup
-          name={popupData.name}
-          summary={popupData.summary}
+          name={name}
+          summary={summary}
           onClose={handleClose}
         />
       )}
@@ -62,4 +58,4 @@ function App() {
   );
 }
 
-export default App;
+export default PeopleInteraction;

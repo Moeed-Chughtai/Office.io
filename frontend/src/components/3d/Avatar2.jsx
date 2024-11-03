@@ -1,11 +1,13 @@
 // src/components/3d/Avatar2.js
 import React, { useRef } from 'react';
+import  PeopleInteraction  from '../../functions/PeopleInteraction';
 
 function Avatar2() {
   const avatarRef = useRef();
+  const handleClick = PeopleInteraction("John Doe", "Software Engineer");
 
   return (
-    <group ref={avatarRef} position={[0, 1, 0]}>
+    <group ref={avatarRef} position={[0, 1, 0]} onClick={handleClick()} >
       {/* Head */}
       <mesh position={[0, 1.6, 0]}>
         <sphereGeometry args={[0.3, 16, 16]} />
