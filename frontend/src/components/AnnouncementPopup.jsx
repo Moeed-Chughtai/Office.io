@@ -38,7 +38,7 @@ const AnnouncementPopup = () => {
 
         conversations.forEach(conversation => {
           conversation.participants.forEach(participant => {
-            if (participant !== "User A") users.add(participant);
+            if (participant !== "Kalmani") users.add(participant);
           });
         });
 
