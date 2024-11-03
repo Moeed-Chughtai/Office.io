@@ -15,6 +15,7 @@ CORS(app)
 CONVERSATIONS_FILE = 'data/conversations.json'
 MESSAGES_FILE = 'data/messages.json'
 USER_FILE = 'data/user.json'
+EVENTS_FILE = 'data/events.json'
 
 # Load Embedding Model
 embedding_model = SentenceTransformer("sentence-transformers/multi-qa-mpnet-base-dot-v1")  # Optimized for QA tasks
@@ -164,6 +165,53 @@ def ask_question():
     answer = qa_tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     return jsonify({"answer": answer}), 200
+
+
+def load_events():
+    """Load events from the JSON file."""
+    if os.path.exists(EVENTS_FILE):
+        with open(EVENTS_FILE, 'r') as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                # Return an empty list if the file is empty or corrupted
+                return []
+    return []
+
+def save_events(events):
+    """Save events to the JSON file."""
+    with open(EVENTS_FILE, 'w') as file:
+        json.dump(events, file, indent=4)
+
+# Route to fetch all events
+@app.route('/events', methods=['GET'])
+def get_events():
+    events = load_events()
+    return jsonify(events)
+
+# Route to add a new event
+@app.route('/events', methods=['POST'])
+def add_event():
+    event_data = request.json  # Get event data from request
+
+    # Load existing events
+    events = load_events()
+
+    # Add new event with a unique ID (based on existing number of events)
+    new_event = {
+        "id": len(events) + 1,
+        "title": event_data.get("title"),
+        "start": event_data.get("start"),
+        "end": event_data.get("end"),
+        "person": event_data.get("person"),
+        "description": event_data.get("description")
+    }
+    events.append(new_event)
+
+    # Save updated events to the file
+    save_events(events)
+
+    return jsonify(new_event), 201
 
 # Ensure necessary directories and files are set up
 if __name__ == "__main__":

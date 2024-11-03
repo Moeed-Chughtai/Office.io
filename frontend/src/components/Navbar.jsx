@@ -20,7 +20,7 @@ const ResponsiveAppBar = () => {
         <Link to='/messages' className={`navbar-item ${activeItem === '/messages' ? 'active' : ''}`}>Messages</Link>
         <Link to='/chatbot' className={`navbar-item ${activeItem === '/chatbot' ? 'active' : ''}`}>Chatbot</Link>
         <Link to='/login' className={`navbar-item ${activeItem === '/login' ? 'active' : ''}`}>Sign Up</Link>
-        <div class="animation"></div>
+        <div className="animation"></div>
       </nav>
     </>
   );

@@ -1,103 +1,118 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Button, Dialog, DialogActions, DialogContent, TextField, DialogTitle } from '@mui/material';
 
-// Set up moment.js as the date localizer
 const localizer = momentLocalizer(moment);
 
-// Function to generate a whole month schedule of recurring events with team names and descriptions
-const generateMonthlySchedule = () => {
-  const events = [];
-  const today = moment();
-  const endOfMonth = moment().endOf('month');
+const Scheduler = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newEvent, setNewEvent] = useState({ title: '', start: new Date(), end: new Date(), person: '', description: '' });
 
-  // Stand-Ups: 15 mins, 2x a day on weekdays
-  for (let day = today.clone(); day.isBefore(endOfMonth); day.add(1, 'days')) {
-    if (day.isoWeekday() < 6) { // Only weekdays
+  const generateMonthlySchedule = () => {
+    const events = [];
+    const today = moment();
+    const endOfMonth = moment().endOf('month');
+  
+    // Morning Stand-Ups: Only on Mondays, Wednesdays, and Thursdays
+    for (let day = today.clone(); day.isBefore(endOfMonth); day.add(1, 'days')) {
+      if (day.isoWeekday() === 1 || day.isoWeekday() === 3 || day.isoWeekday() === 4) {
+        events.push({
+          id: events.length,
+          title: 'Morning Stand-Up',
+          start: day.clone().hour(9).minute(0).toDate(),
+          end: day.clone().hour(9).minute(15).toDate(),
+          person: 'Development Team',
+          description: 'Quick update on daily progress and blockers',
+        });
+      }
+    }
+  
+    // Weekly Team Sync: Every Tuesday
+    for (let day = today.clone().startOf('month'); day.isBefore(endOfMonth); day.add(1, 'weeks')) {
       events.push({
         id: events.length,
-        title: 'Morning Stand-Up',
-        start: day.clone().hour(9).minute(0).toDate(),
-        end: day.clone().hour(9).minute(15).toDate(),
-        person: 'Development Team',
-        description: 'Daily stand-up to discuss progress and blockers',
-      });
-      events.push({
-        id: events.length,
-        title: 'Afternoon Stand-Up',
-        start: day.clone().hour(16).minute(0).toDate(),
-        end: day.clone().hour(16).minute(15).toDate(),
-        person: 'Development Team',
-        description: 'Daily stand-up to discuss progress and blockers',
+        title: 'Weekly Team Sync',
+        start: day.clone().isoWeekday(2).hour(10).minute(0).toDate(),
+        end: day.clone().isoWeekday(2).hour(11).minute(0).toDate(),
+        person: 'All Teams',
+        description: 'Weekly sync to discuss goals and challenges',
       });
     }
-  }
-
-  // Discipline Meeting: 15th or nearest weekday
-  let disciplineMeetingDate = today.clone().startOf('month').add(14, 'days'); // 15th of the month
-  if (disciplineMeetingDate.isoWeekday() > 5) {
-    disciplineMeetingDate = disciplineMeetingDate.isoWeekday(5); // Move to Friday if it's on a weekend
-  }
-  events.push({
-    id: events.length,
-    title: 'Discipline Meeting',
-    start: disciplineMeetingDate.clone().hour(10).minute(0).toDate(),
-    end: disciplineMeetingDate.clone().hour(11).minute(0).toDate(),
-    person: 'All Teams',
-    description: 'Monthly meeting to discuss team discipline and processes',
-  });
-
-  // Reviews: Twice a week (Tuesdays and Thursdays)
-  for (let day = today.clone(); day.isBefore(endOfMonth); day.add(1, 'days')) {
-    if (day.isoWeekday() === 2 || day.isoWeekday() === 4) { // Tuesdays and Thursdays
+  
+    // Project Review on Thursdays
+    for (let day = today.clone().startOf('month'); day.isBefore(endOfMonth); day.add(1, 'weeks')) {
       events.push({
         id: events.length,
         title: 'Project Review',
-        start: day.clone().hour(14).minute(0).toDate(),
-        end: day.clone().hour(15).minute(0).toDate(),
+        start: day.clone().isoWeekday(4).hour(14).minute(0).toDate(),
+        end: day.clone().isoWeekday(4).hour(15).minute(0).toDate(),
         person: 'Project Management Team',
-        description: 'Review project status and next steps',
+        description: 'Review progress, discuss next steps, and align on project milestones',
       });
     }
-  }
-
-  // Additional Meetings with specific details
-  events.push(
-    {
+  
+    // Monthly Planning Meeting: Third Thursday of the month
+    const planningMeetingDate = today.clone().startOf('month').add(2, 'weeks').isoWeekday(4); // Third Thursday
+    events.push({
       id: events.length,
-      title: 'Team Sync',
-      start: today.clone().add(3, 'days').hour(11).minute(0).toDate(),
-      end: today.clone().add(3, 'days').hour(12).minute(0).toDate(),
-      person: 'Marketing Team',
-      description: 'Weekly sync to discuss ongoing campaigns and upcoming launches',
-    },
-    {
-      id: events.length,
-      title: '1:1 Check-In',
-      start: today.clone().add(10, 'days').hour(13).minute(0).toDate(),
-      end: today.clone().add(10, 'days').hour(13).minute(30).toDate(),
-      person: 'Team Lead - Development',
-      description: 'One-on-one meeting to discuss individual progress and goals',
-    },
-    {
-      id: events.length,
-      title: 'Strategy Meeting',
-      start: today.clone().add(20, 'days').hour(15).minute(0).toDate(),
-      end: today.clone().add(20, 'days').hour(16).minute(30).toDate(),
-      person: 'Executive Team',
-      description: 'Discuss long-term company strategy and objectives',
+      title: 'Monthly Planning Meeting',
+      start: planningMeetingDate.clone().hour(11).minute(0).toDate(),
+      end: planningMeetingDate.clone().hour(12).minute(30).toDate(),
+      person: 'Leadership Team',
+      description: 'Monthly meeting to plan projects and set goals',
+    });
+  
+    // Bi-weekly Brainstorming Session on Thursdays
+    for (let day = today.clone().startOf('month'); day.isBefore(endOfMonth); day.add(2, 'weeks')) {
+      events.push({
+        id: events.length,
+        title: 'Brainstorming Session',
+        start: day.clone().isoWeekday(4).hour(15).minute(0).toDate(),
+        end: day.clone().isoWeekday(4).hour(16).minute(30).toDate(),
+        person: 'Product and Development Teams',
+        description: 'Brainstorming for new features and improvements',
+      });
     }
-  );
+  
+    // Additional Ad-hoc Meeting on a Thursday
+    events.push({
+      id: events.length,
+      title: 'Ad-hoc Planning Meeting',
+      start: today.clone().startOf('month').add(3, 'weeks').isoWeekday(4).hour(13).minute(0).toDate(),
+      end: today.clone().startOf('month').add(3, 'weeks').isoWeekday(4).hour(14).minute(0).toDate(),
+      person: 'Project Leads',
+      description: 'Spontaneous planning meeting to adjust project timelines',
+    });
+  
+    return events;
+  };
 
-  return events;
-};
+  // Initialize events with the generated monthly schedule
+  const [events, setEvents] = useState(generateMonthlySchedule);
 
-const Scheduler = () => {
-  const [events, setEvents] = useState(generateMonthlySchedule());
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [newEvent, setNewEvent] = useState({ title: '', start: new Date(), end: new Date(), person: '', description: '' });
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/events");
+        if (response.ok) {
+          const backendEvents = await response.json();
+          const parsedBackendEvents = backendEvents.map(event => ({
+            ...event,
+            start: new Date(event.start),
+            end: new Date(event.end),
+          }));
+          setEvents(prevEvents => [...prevEvents, ...parsedBackendEvents]);
+        } else {
+          console.error("Failed to fetch events");
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const handleSelectSlot = (slotInfo) => {
     setNewEvent({ title: '', start: slotInfo.start, end: slotInfo.end, person: '', description: '' });
@@ -108,12 +123,43 @@ const Scheduler = () => {
     setNewEvent({ ...newEvent, [field]: e.target.value });
   };
 
-  const handleAddEvent = () => {
-    setEvents([...events, { ...newEvent, start: new Date(newEvent.start), end: new Date(newEvent.end) }]);
-    setDialogOpen(false);
+  const handleDateChange = (field) => (e) => {
+    setNewEvent({ ...newEvent, [field]: new Date(e.target.value) });
   };
 
-  // Custom event renderer to display person and description with the event title
+  const handleAddEvent = async () => {
+    const newEventData = {
+      title: newEvent.title,
+      start: newEvent.start.toISOString(),
+      end: newEvent.end.toISOString(),
+      person: newEvent.person,
+      description: newEvent.description,
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newEventData),
+      });
+
+      if (response.ok) {
+        const savedEvent = await response.json();
+        setEvents(prevEvents => [
+          ...prevEvents,
+          { ...savedEvent, start: new Date(savedEvent.start), end: new Date(savedEvent.end) }
+        ]);
+        setDialogOpen(false);  // Close dialog only after successful addition
+      } else {
+        console.error("Failed to save event");
+      }
+    } catch (error) {
+      console.error("Error saving event:", error);
+    }
+  };
+
   const eventRenderer = ({ event }) => (
     <div>
       <strong>{event.title}</strong>
@@ -136,7 +182,7 @@ const Scheduler = () => {
         components={{
           event: eventRenderer,
         }}
-        views={['month', 'week', 'day', 'agenda']} // Enable month, week, day, and agenda views
+        views={['month', 'week', 'day', 'agenda']}
       />
 
       {/* Dialog for adding new events */}
@@ -175,7 +221,7 @@ const Scheduler = () => {
             fullWidth
             InputLabelProps={{ shrink: true }}
             value={moment(newEvent.start).format('YYYY-MM-DDTHH:mm')}
-            onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+            onChange={handleDateChange('start')}
           />
           <TextField
             margin="dense"
@@ -184,7 +230,7 @@ const Scheduler = () => {
             fullWidth
             InputLabelProps={{ shrink: true }}
             value={moment(newEvent.end).format('YYYY-MM-DDTHH:mm')}
-            onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+            onChange={handleDateChange('end')}
           />
         </DialogContent>
         <DialogActions>
