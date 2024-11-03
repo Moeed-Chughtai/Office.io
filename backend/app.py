@@ -21,7 +21,7 @@ embedding_model = SentenceTransformer("sentence-transformers/multi-qa-mpnet-base
 embedding_index = None
 
 # Load a large generative model for question answering
-qa_model_name = "google/flan-t5-large"  # Use "flan-t5-xxl" if you have the resources
+qa_model_name = "google/flan-t5-large"
 qa_tokenizer = AutoTokenizer.from_pretrained(qa_model_name)
 qa_model = AutoModelForSeq2SeqLM.from_pretrained(qa_model_name)
 
@@ -50,54 +50,36 @@ def login():
     save_data(USER_FILE, user)
     return jsonify(user), 201
 
-@app.route('/conversations/<conversation_id>', methods=['GET'])
-def get_conversation(conversation_id):
-    conversations = load_data(CONVERSATIONS_FILE)
-    conversation = conversations.get(conversation_id, {})
-    return jsonify(conversation)
-
-# Route to get all conversations
+# Route to fetch all conversations
 @app.route('/conversations', methods=['GET'])
-def get_conversations():
+def get_all_conversations():
     conversations = load_data(CONVERSATIONS_FILE)
-    return jsonify(list(conversations.values()))
+    return jsonify(list(conversations.values())), 200
 
-# Route to get the current user information
-@app.route('/user', methods=['GET'])
-def get_user():
-    user = load_data(USER_FILE)
-    return jsonify(user)
-
-# Route to get messages for a specific conversation
+# Route to fetch messages for a specific conversation
 @app.route('/conversations/<conversation_id>/messages', methods=['GET'])
-def get_messages(conversation_id):
-    messages = load_data(MESSAGES_FILE).get(conversation_id, [])
-    user = load_data(USER_FILE)
-    for msg in messages:
-        msg['isCurrentUser'] = (msg['senderId'] == user['userId'])
-    return jsonify(messages)
+def get_conversation_messages(conversation_id):
+    messages = load_data(MESSAGES_FILE)
+    conversation_messages = messages.get(conversation_id, [])
+    return jsonify(conversation_messages), 200
 
 # Route to add a new message to a conversation
 @app.route('/conversations/<conversation_id>/messages', methods=['POST'])
-def add_message(conversation_id):
+def post_conversation_message(conversation_id):
     message_data = request.json
     messages = load_data(MESSAGES_FILE)
 
     new_message = {
         "text": message_data.get("text"),
         "senderId": message_data.get("senderId"),
-        "timestamp": message_data.get("timestamp"),
+        "timestamp": message_data.get("timestamp")
     }
+
     if conversation_id not in messages:
         messages[conversation_id] = []
     messages[conversation_id].append(new_message)
 
     save_data(MESSAGES_FILE, messages)
-    conversations = load_data(CONVERSATIONS_FILE)
-    if conversation_id in conversations:
-        conversations[conversation_id]["lastMessage"] = message_data.get("text")
-    save_data(CONVERSATIONS_FILE, conversations)
-
     return jsonify(new_message), 201
 
 # Function to extract text from PDF
@@ -161,9 +143,9 @@ def ask_question():
     inputs = qa_tokenizer(input_text, return_tensors="pt")
     outputs = qa_model.generate(
         **inputs,
-        max_length=200,         # Controls the length of the response
-        num_beams=5,            # Beam search to improve coherence
-        no_repeat_ngram_size=2  # Prevents repetitive n-grams for better coherence
+        max_length=200,
+        num_beams=5,
+        no_repeat_ngram_size=2
     )
     
     answer = qa_tokenizer.decode(outputs[0], skip_special_tokens=True)

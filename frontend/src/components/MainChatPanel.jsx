@@ -70,8 +70,12 @@ const MainChatPanel = ({ conversationId }) => {
         });
 
         if (response.ok) {
-          setMessages((prevMessages) => [...prevMessages, { ...message, isCurrentUser: true }]);
-          setNewMessage('');
+          // Directly update the messages state to include the new message
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { ...message, isCurrentUser: true },
+          ]);
+          setNewMessage(''); // Clear the input field after sending
         } else {
           console.error('Failed to send message');
         }
@@ -85,7 +89,7 @@ const MainChatPanel = ({ conversationId }) => {
     <div className="flex flex-col h-full p-4">
       {conversation && (
         <div className="mb-4 text-xl font-bold text-center">
-          Chatting with: {conversation.otherParticipantName}
+          Chatting with: {conversation.otherParticipantName || conversation.name}
         </div>
       )}
       <div className="flex-1 overflow-y-auto space-y-3">
