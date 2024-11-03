@@ -235,7 +235,7 @@ function Scene(isFirstPerson) {
       <OfficeDisplay position={[-12.5, 3, -30]} scale={4} />
       <OfficeDisplay position={[12.5, 3, -30]} scale={4} />
 
-      <Avatar2/>
+      <Avatar2 name="John Doe" summary="Software Engineer" />
 
 
 

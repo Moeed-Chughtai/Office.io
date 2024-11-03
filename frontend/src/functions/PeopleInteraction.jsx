@@ -1,3 +1,4 @@
+// src/functions/PeopleInteraction.js
 import React, { useState } from 'react';
 
 function UserPopup({ name, summary, onClose }) {
@@ -25,36 +26,9 @@ function UserPopup({ name, summary, onClose }) {
   );
 }
 
-function PeopleInteraction({ name, summary }) {
-  const [showPopup, setShowPopup] = useState(false);
-
-  const handleClick = () => {
-    setShowPopup(true);
-  };
-
-  const handleClose = () => {
-    setShowPopup(false);
-  };
-
+function PeopleInteraction({ name, summary, onClose }) {
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div>
-        <button
-          onClick={handleClick}
-          className="text-blue-500 underline"
-        >
-          Click to see details of {name}
-        </button>
-      </div>
-
-      {showPopup && (
-        <UserPopup
-          name={name}
-          summary={summary}
-          onClose={handleClose}
-        />
-      )}
-    </div>
+    <UserPopup name={name} summary={summary} onClose={onClose} />
   );
 }
 
