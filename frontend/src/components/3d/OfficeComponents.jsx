@@ -308,7 +308,7 @@ export function AdjustableWall({ position = [0, 2.5, 0], width = 10, height = 5,
         {/* Left Door */}
         <group ref={leftDoorRef}>
           <mesh position={[0, 0.5, 0]}>
-            <boxGeometry args={[0.4, 1, 0.05]} /> {/* Wider and shorter */}
+            <boxGeometry args={[1, 1, 0.05]} /> {/* Wider and shorter */}
             <meshStandardMaterial color="#87ceeb" opacity={0.3} transparent metalness={0.3} roughness={0.1} />
           </mesh>
   
@@ -322,7 +322,7 @@ export function AdjustableWall({ position = [0, 2.5, 0], width = 10, height = 5,
         {/* Right Door */}
         <group ref={rightDoorRef}>
           <mesh position={[0, 0.5, 0]}>
-            <boxGeometry args={[0.4, 1, 0.05]} />
+            <boxGeometry args={[1, 1, 0.05]} />
             <meshStandardMaterial color="#87ceeb" opacity={0.3} transparent metalness={0.3} roughness={0.1} />
           </mesh>
   

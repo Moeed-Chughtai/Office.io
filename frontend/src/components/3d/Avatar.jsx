@@ -1,5 +1,5 @@
 // src/components/3d/Avatar.js
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -19,9 +19,14 @@ function Avatar({ isFirstPerson }) {
   const avatarRef = useRef();
   const { camera } = useThree();
 
-  const speed = 0.05;
-  const rotationSpeed = 0.03;
-  const keysPressed = useRef({ forward: false, backward: false, left: false, right: false });
+  const speed = 0.075;
+  const rotationSpeed = 0.05;
+  const jumpStrength = 0.15;
+  const gravity = 0.01;
+  const keysPressed = useRef({ forward: false, backward: false, left: false, right: false, jump: false });
+
+  const [velocityY, setVelocityY] = useState(0); // Vertical velocity for jumping
+  const [isGrounded, setIsGrounded] = useState(true); // To track if avatar is on the ground
 
   const logFirstPerson = throttle((mode) => console.log("Avatar: First-person mode:", mode), 1000); // 1 second delay
 
@@ -36,12 +41,14 @@ function Avatar({ isFirstPerson }) {
       if (event.key === 's') keysPressed.current.backward = true;
       if (event.key === 'a') keysPressed.current.left = true;
       if (event.key === 'd') keysPressed.current.right = true;
+      if (event.key === ' ') keysPressed.current.jump = true;
     };
     const handleKeyUp = (event) => {
       if (event.key === 'w') keysPressed.current.forward = false;
       if (event.key === 's') keysPressed.current.backward = false;
       if (event.key === 'a') keysPressed.current.left = false;
       if (event.key === 'd') keysPressed.current.right = false;
+      if (event.key === ' ') keysPressed.current.jump = false;
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -85,7 +92,28 @@ function Avatar({ isFirstPerson }) {
     //     // console.log("Camera in third-person mode"); // Log camera behavior when in third-person
     //   }
     
+
+    if (keysPressed.current.jump && isGrounded) {
+        setVelocityY(jumpStrength); // Set upward velocity
+        setIsGrounded(false); // Avatar is now in the air
+      }
+
+      // Apply gravity
+      if (!isGrounded) {
+        setVelocityY((vY) => vY - gravity); // Apply downward force
+        position.y += velocityY; // Update vertical position
+
+        // Check if the avatar has landed
+        if (position.y <= 1) { // Ground level
+          position.y = 1;
+          setVelocityY(0);
+          setIsGrounded(true);
+        }
     }
+}
+
+
+
   });
 
   return (
