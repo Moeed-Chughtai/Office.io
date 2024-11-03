@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import json
 import os
 import fitz  # PyMuPDF for PDF processing
@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from sentence_transformers import SentenceTransformer
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 hardcoded_answers = {
     "What is this project?":
@@ -123,8 +123,17 @@ def chunk_text(text, chunk_size=500, overlap=100):
         chunks.append(" ".join(words[i:i + chunk_size]))
     return chunks
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PUT, DELETE'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
+
 # Endpoint to upload PDF and prepare it for Q&A
 @app.route("/upload_pdf", methods=["POST"])
+@cross_origin(origin="http://localhost:5173")
 def upload_pdf():
     global embedding_index, chunks, chunk_embeddings
     
@@ -236,4 +245,4 @@ if __name__ == "__main__":
         if not os.path.exists(file_name):
             with open(file_name, 'w') as f:
                 json.dump({}, f)
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

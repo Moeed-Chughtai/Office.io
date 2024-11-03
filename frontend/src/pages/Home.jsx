@@ -50,6 +50,7 @@ const Home = () => {
 
       <ChatPopup />
       <SchedulePopup />
+      <AnnouncementPopup />
     </>
   );
 }
