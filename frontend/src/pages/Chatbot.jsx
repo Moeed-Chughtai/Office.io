@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const Chatbot = () => {
   const [pdfFile, setPdfFile] = useState(null);
@@ -52,41 +53,45 @@ const Chatbot = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h2>PDF Chatbot</h2>
+    <div>
+      <Navbar />
+        <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+          <h2>PDF Chatbot</h2>
 
-      {/* PDF Upload Section */}
-      <input type="file" accept="application/pdf" onChange={handlePdfUpload} />
-      {loading && <p>Processing PDF...</p>}
-      <p>{answer}</p>
-
-      {/* Question Section */}
-      {pdfUploaded && (
-        <form onSubmit={handleQuestionSubmit} style={{ marginTop: "20px" }}>
-          <label>
-            <strong>Ask a question about the PDF:</strong>
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Type your question here"
-              style={{ width: "100%", padding: "10px", marginTop: "10px" }}
-            />
-          </label>
-          <button type="submit" disabled={loading} style={{ marginTop: "10px" }}>
-            Ask
-          </button>
-        </form>
-      )}
-
-      {/* Display Answer */}
-      {answer && (
-        <div style={{ marginTop: "20px", padding: "10px", background: "#f5f5f5" }}>
-          <strong>Answer:</strong>
+          {/* PDF Upload Section */}
+          <input type="file" accept="application/pdf" onChange={handlePdfUpload} />
+          {loading && <p>Processing PDF...</p>}
           <p>{answer}</p>
+
+          {/* Question Section */}
+          {pdfUploaded && (
+            <form onSubmit={handleQuestionSubmit} style={{ marginTop: "20px" }}>
+              <label>
+                <strong>Ask a question about the PDF:</strong>
+                <input
+                  type="text"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="Type your question here"
+                  style={{ width: "100%", padding: "10px", marginTop: "10px" }}
+                />
+              </label>
+              <button type="submit" disabled={loading} style={{ marginTop: "10px" }}>
+                Ask
+              </button>
+            </form>
+          )}
+
+          {/* Display Answer */}
+          {answer && (
+            <div style={{ marginTop: "20px", padding: "10px", background: "#f5f5f5" }}>
+              <strong>Answer:</strong>
+              <p>{answer}</p>
+            </div>
+          )}
         </div>
-      )}
     </div>
+    
   );
 };
 

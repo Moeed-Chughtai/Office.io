@@ -25,7 +25,7 @@ function LogIn() {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-custom-gradient">
+    <div className="h-screen bg-custom-gradient">
       <Navbar/>
       <div className="flex items-center justify-center h-[calc(100vh-27px)]">
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden max-w-3xl w-full">
