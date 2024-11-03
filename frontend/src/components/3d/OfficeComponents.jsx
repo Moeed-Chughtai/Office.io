@@ -5,6 +5,7 @@ import { useTexture } from '@react-three/drei';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import BoardInteraction from '../../functions/BoardInteraction';
+import * as THREE from 'three';
 
 // src/components/3d/Wall.js
 
@@ -336,6 +337,149 @@ export function AdjustableWall({ position = [0, 2.5, 0], width = 10, height = 5,
       </group>
     );
   }
+
+
+
+
+  
+  export function BoardroomTable({ position = [0, 0, 0], tableScale = [1.4, 1.4, 1.4], chairScale = [0.8, 0.8, 0.8] }) {
+    return (
+      <group position={position}>
+        {/* Table Top */}
+        <mesh position={[0, 0.75, 0]} scale={tableScale}>
+          <boxGeometry args={[10, 0.3, 3.5]} /> {/* Larger table dimensions */}
+          <meshStandardMaterial color="#d3d3d3" />
+        </mesh>
+  
+        {/* Table Legs */}
+        {[[-4, -0.1, 1.5], [4, -0.1, 1.5], [-4, -0.1, -1.5], [4, -0.1, -1.5]].map((pos, i) => (
+          <mesh key={`table-leg-${i}`} position={pos} scale={[0.3, 1.5, 0.3]}>
+            <cylinderGeometry args={[0.15, 0.15, 1.3, 16]} />
+            <meshStandardMaterial color="#888888" />
+          </mesh>
+        ))}
+  
+        {/* Four Chairs on each long side */}
+        {[1.8, 0.6, -0.6, -1.8].map((z, i) => (
+          <group key={`chair-left-${i}`} position={[-5.5, 0, z]} scale={chairScale} rotation={[0, Math.PI / 2, 0]}>
+            {/* Chair Seat */}
+            <mesh position={[0, 0.6, 0]}>
+              <boxGeometry args={[0.8, 0.1, 0.8]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+            {/* Chair Backrest */}
+            <mesh position={[0, 1.2, -0.35]}>
+              <boxGeometry args={[0.8, 1, 0.1]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+            {/* Chair Legs */}
+            {[-0.3, 0.3].map((x) =>
+              [-0.3, 0.3].map((z) => (
+                <mesh key={`leg-left-${x}-${z}`} position={[x, 0.2, z]}>
+                  <cylinderGeometry args={[0.05, 0.05, 0.7, 12]} />
+                  <meshStandardMaterial color="#333333" />
+                </mesh>
+              ))
+            )}
+            {/* Chair Armrests */}
+            <mesh position={[-0.35, 0.8, 0]}>
+              <boxGeometry args={[0.05, 0.3, 0.8]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+            <mesh position={[0.35, 0.8, 0]}>
+              <boxGeometry args={[0.05, 0.3, 0.8]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+          </group>
+        ))}
+  
+        {[1.8, 0.6, -0.6, -1.8].map((z, i) => (
+          <group key={`chair-right-${i}`} position={[5.5, 0, z]} scale={chairScale} rotation={[0, -Math.PI / 12, 0]}>
+            <mesh position={[0, 0.6, 0]}>
+              <boxGeometry args={[0.8, 0.1, 0.8]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+            <mesh position={[0, 1.2, -0.35]}>
+              <boxGeometry args={[0.8, 1, 0.1]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+            {[-0.3, 0.3].map((x) =>
+              [-0.3, 0.3].map((z) => (
+                <mesh key={`leg-right-${x}-${z}`} position={[x, 0.2, z]}>
+                  <cylinderGeometry args={[0.05, 0.05, 0.7, 12]} />
+                  <meshStandardMaterial color="#333333" />
+                </mesh>
+              ))
+            )}
+            <mesh position={[-0.35, 0.8, 0]}>
+              <boxGeometry args={[0.05, 0.3, 0.8]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+            <mesh position={[0.35, 0.8, 0]}>
+              <boxGeometry args={[0.05, 0.3, 0.8]} />
+              <meshStandardMaterial color="#444444" />
+            </mesh>
+          </group>
+        ))}
+  
+        {/* Single Chair at each end of the table */}
+        <group position={[0, 0, 3]} scale={chairScale} rotation={[0, Math.PI / 2, 0]}>
+          <mesh position={[0, 0.6, 0]}>
+            <boxGeometry args={[0.8, 0.1, 0.8]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+          <mesh position={[0, 1.2, -0.35]}>
+            <boxGeometry args={[0.8, 1, 0.1]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+          {[-0.3, 0.3].map((x) =>
+            [-0.3, 0.3].map((z) => (
+              <mesh key={`leg-end-top-${x}-${z}`} position={[x, 0.2, z]}>
+                <cylinderGeometry args={[0.05, 0.05, 0.7, 12]} />
+                <meshStandardMaterial color="#333333" />
+              </mesh>
+            ))
+          )}
+          <mesh position={[-0.35, 0.8, 0]}>
+            <boxGeometry args={[0.05, 0.3, 0.8]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+          <mesh position={[0.35, 0.8, 0]}>
+            <boxGeometry args={[0.05, 0.3, 0.8]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+        </group>
+  
+        <group position={[0, 0, -3]} scale={chairScale} rotation={[0, -Math.PI / 2, 0]}>
+          <mesh position={[0, 0.6, 0]}>
+            <boxGeometry args={[0.8, 0.1, 0.8]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+          <mesh position={[0, 1.2, -0.35]}>
+            <boxGeometry args={[0.8, 1, 0.1]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+          {[-0.3, 0.3].map((x) =>
+            [-0.3, 0.3].map((z) => (
+              <mesh key={`leg-end-bottom-${x}-${z}`} position={[x, 0.2, z]}>
+                <cylinderGeometry args={[0.05, 0.05, 0.7, 12]} />
+                <meshStandardMaterial color="#333333" />
+              </mesh>
+            ))
+          )}
+          <mesh position={[-0.35, 0.8, 0]}>
+            <boxGeometry args={[0.05, 0.3, 0.8]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+          <mesh position={[0.35, 0.8, 0]}>
+            <boxGeometry args={[0.05, 0.3, 0.8]} />
+            <meshStandardMaterial color="#444444" />
+          </mesh>
+        </group>
+      </group>
+    );
+  }
+  
 
 export default OfficeDisplay;
 

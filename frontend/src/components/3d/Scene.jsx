@@ -2,7 +2,7 @@
 import React, { useRef, Suspense, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { SmallWall, Wall, Desk, Chair, Floor, OfficePlant, TallOfficePlant, OfficeDisplay, AdjustableWall, Floor2, DoubleGlassDoors } from './OfficeComponents';
+import { SmallWall, Wall, Desk, Chair, Floor, OfficePlant, TallOfficePlant, OfficeDisplay, AdjustableWall, Floor2, DoubleGlassDoors, BoardroomTable } from './OfficeComponents';
 import Avatar from './Avatar';
 import { ConferenceSeating } from './ConferenceSeating';
 import { OfficeDivider } from './OfficeDivider';
@@ -214,6 +214,22 @@ function Scene(isFirstPerson) {
       <DoubleGlassDoors position={[0, 0, -20]} scale={5} />
 
       <Avatar/>
+
+
+      <SmallWall position={[-5, 2.5, -25]} args={[0.2, 5, 8]} />
+      <SmallWall position={[5, 2.5, -25]} args={[0.2, 5, 8]} />
+
+      <SmallWall position={[-5, 2.5, -37.5]} args={[0.2, 5, 8]} />
+      <SmallWall position={[5, 2.5, -37.5]} args={[0.2, 5, 8]} />
+
+      <Wall position={[-20, 2.5, -40]} args={[0.2, 5, 40]} />
+      <Wall position={[20, 2.5, -40]} args={[0.2, 5, 40]} />
+      <Wall position={[0, 2.5, -60]} args={[40, 5, 0.2]} />
+
+
+      <BoardroomTable position={[0, 2.5, -30]} />
+
+
 
       
     </>
