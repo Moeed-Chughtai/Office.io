@@ -1,13 +1,14 @@
 // src/OfficeComponents.js
-import React from 'react';
+import React,{useState, useRef} from 'react';
 import { useTexture } from '@react-three/drei';
 import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 
 // src/components/3d/Wall.js
 
 export function Wall({ position, args }) {
   // Load a subtle wall texture or pattern (assuming it's in your public folder)
-  const wallTexture = useTexture('/brick.jpg'); // Replace with your texture file path
+  const wallTexture = useTexture('/bluewall.jpg'); // Replace with your texture file path
 
   return (
     <group position={position}>
@@ -131,13 +132,16 @@ export function Chair({ position }) {
 
 // Floor Component
 export function Floor() {
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-      <planeGeometry args={[40, 40]} />
-      <meshStandardMaterial color="#D2B48C" /> {/* Light brown color */}
-    </mesh>
-  );
-}
+    // Load the texture file
+    const texture = useTexture('/tiles.webp'); // Replace with the path to your texture file
+  
+    return (
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+        <planeGeometry args={[40, 40]} />
+        <meshStandardMaterial map={texture} /> {/* Apply the texture */}
+      </mesh>
+    );
+  }
 
 
 // src/components/3d/OfficePlant.js
@@ -245,6 +249,92 @@ export function OfficeDisplay({ position = [0, 0, 0], scale = 1 }) {
     </group>
   );
 }
+
+export function AdjustableWall({ position = [0, 2.5, 0], width = 10, height = 5, depth = 0.2 }) {
+    // Load wall texture
+    const wallTexture = useTexture('/bluewall.jpg'); // Adjust path as needed
+  
+    return (
+      <group position={position}>
+        {/* Main Wall */}
+        <mesh>
+          <boxGeometry args={[width, height, depth]} /> {/* Adjustable width */}
+          <meshStandardMaterial map={wallTexture} /> {/* Apply texture to wall */}
+        </mesh>
+  
+        {/* Bottom Molding */}
+        <mesh position={[0, -height / 2 + 0.05, 0]}>
+          <boxGeometry args={[width, 0.1, 0.1]} /> {/* Adjusted to match width */}
+          <meshStandardMaterial color="#888888" /> {/* Darker color for molding */}
+        </mesh>
+      </group>
+    );
+  }
+
+
+  export function Floor2() {
+    // Load the texture file
+    const texture = useTexture('/laminated.jpg'); // Replace with the path to your texture file
+  
+    return (
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -40]}>
+        <planeGeometry args={[40, 40]} />
+        <meshStandardMaterial map={texture} /> {/* Apply the texture */}
+      </mesh>
+    );
+  }
+
+
+  export function DoubleGlassDoors({ position = [0, 0, 0], scale = 1 }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const leftDoorRef = useRef();
+    const rightDoorRef = useRef();
+  
+    // Toggle the open state on click
+    const handleDoorClick = () => {
+      setIsOpen((prev) => !prev);
+    };
+  
+    // Slide doors open or closed on each frame
+    useFrame(() => {
+      if (leftDoorRef.current && rightDoorRef.current) {
+        leftDoorRef.current.position.x = isOpen ? -0.8 : -0.4;
+        rightDoorRef.current.position.x = isOpen ? 0.8 : 0.4;
+      }
+    });
+  
+    return (
+      <group position={position} scale={scale} onClick={handleDoorClick}>
+        {/* Left Door */}
+        <group ref={leftDoorRef}>
+          <mesh position={[0, 0.5, 0]}>
+            <boxGeometry args={[0.4, 1, 0.05]} /> {/* Wider and shorter */}
+            <meshStandardMaterial color="#87ceeb" opacity={0.3} transparent metalness={0.3} roughness={0.1} />
+          </mesh>
+  
+          {/* Left Handle */}
+          <mesh position={[0.15, 0.5, 0.03]}>
+            <cylinderGeometry args={[0.02, 0.02, 0.3, 32]} />
+            <meshStandardMaterial color="#888888" />
+          </mesh>
+        </group>
+  
+        {/* Right Door */}
+        <group ref={rightDoorRef}>
+          <mesh position={[0, 0.5, 0]}>
+            <boxGeometry args={[0.4, 1, 0.05]} />
+            <meshStandardMaterial color="#87ceeb" opacity={0.3} transparent metalness={0.3} roughness={0.1} />
+          </mesh>
+  
+          {/* Right Handle */}
+          <mesh position={[-0.15, 0.5, 0.03]}>
+            <cylinderGeometry args={[0.02, 0.02, 0.3, 32]} />
+            <meshStandardMaterial color="#888888" />
+          </mesh>
+        </group>
+      </group>
+    );
+  }
 
 export default OfficeDisplay;
 

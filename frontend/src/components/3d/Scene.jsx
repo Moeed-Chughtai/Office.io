@@ -1,8 +1,8 @@
 // src/Scene.js
-import React, { useRef, Suspense } from 'react';
-import { useFrame } from '@react-three/fiber';
+import React, { useRef, Suspense, useState, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { SmallWall, Wall, Desk, Chair, Floor, OfficePlant, TallOfficePlant, OfficeDisplay } from './OfficeComponents';
+import { SmallWall, Wall, Desk, Chair, Floor, OfficePlant, TallOfficePlant, OfficeDisplay, AdjustableWall, Floor2, DoubleGlassDoors } from './OfficeComponents';
 import Avatar from './Avatar';
 import { ConferenceSeating } from './ConferenceSeating';
 import { OfficeDivider } from './OfficeDivider';
@@ -11,11 +11,14 @@ import {Sofa} from './Sofa';
 import {LoungeArea} from './LoungeArea';
 import {PoolTable} from './PoolTable';
 
-function Scene() {
+function Scene(isFirstPerson) {
   const avatarRef = useRef();
   const controlsRef = useRef();
 
+  
+
   // Update the OrbitControls target to follow the avatar
+
   useFrame(() => {
     if (avatarRef.current && controlsRef.current) {
       controlsRef.current.target.copy(avatarRef.current.position);
@@ -23,8 +26,32 @@ function Scene() {
     }
   });
 
+  const { camera } = useThree(); // Access the camera
+
+  // Set the default camera position once
+  useEffect(() => {
+    camera.position.set(10, 10, 10); // Set initial x, y, z position of camera
+    camera.lookAt(0, 0, 0); // Optionally point it toward the center
+  }, [camera]);
+
+
+  // Log `isFirstPerson` value to verify prop updates
+
+  // useEffect(() => {
+  //   if (controlsRef.current) {
+  //     controlsRef.current.enabled = !isFirstPerson;
+  //     console.log("OrbitControls enabled:", controlsRef.current.enabled);
+  //   }
+  // });
+
+  
+
   return (
     <>
+
+      
+
+
       {/* Lighting */}
       <ambientLight />
       <pointLight position={[20, 20, 20]} />
@@ -35,8 +62,11 @@ function Scene() {
       {/* Main Room Walls */}
       <Wall position={[-20, 2.5, 0]} args={[0.2, 5, 40]} />
       <Wall position={[20, 2.5, 0]} args={[0.2, 5, 40]} />
-      <Wall position={[0, 2.5, -20]} args={[40, 5, 0.2]} />
+      {/* <Wall position={[0, 2.5, -20]} args={[40, 5, 0.2]} /> */}
       <Wall position={[0, 2.5, 20]} args={[40, 5, 0.2]} />
+
+      <AdjustableWall position={[12.5, 2.5, -20]} width={15} />
+      <AdjustableWall position={[-12.5, 2.5, -20]} width={15} />
 
       {/* SPECIAL ONESSSSSSSSSSSSSSSSSSSSSSSS */}
 
@@ -76,7 +106,11 @@ function Scene() {
       {/* Dividers */}
       <OfficeDivider position={[15, 1, 2]} scale={1.5} />
       <OfficeDivider position={[-15, 1, 2]} scale={1.5} />
-      <OfficeDivider position={[0, 1, -15]} rotation={[0, Math.PI / 2, 0]} scale={1.5} />
+
+      <group position={[0, 0, -15]} rotation={[0, Math.PI / 2, 0]}>
+        <OfficeDivider position={[-30, 1, 0]}scale={1.5} />
+      </group>
+      
 
       {/* Plants */}
       <OfficePlant position={[-2, 0, 5]} scale={1.5} />
@@ -91,17 +125,17 @@ function Scene() {
       <ConferenceSeating position={[-5, 0, -5]} scale={1.5} />
       <ConferenceSeating position={[5, 0, -5]} scale={1.5} />
 
-      {/* Avatar */}
       <Suspense fallback={null}>
-        <Avatar ref={avatarRef} />
+        <Avatar ref={avatarRef} isFirstPerson={isFirstPerson} />
       </Suspense>
 
-      {/* Orbit Controls */}
+      {/* Conditionally render OrbitControls */}
+      {/* {!isFirstPerson && <OrbitControls ref={controlsRef} />} */}
       <OrbitControls ref={controlsRef} />
 
       {/* Helpers */}
       <primitive object={new AxesHelper(10)} />
-      <primitive object={new GridHelper(50, 50)} />
+      {/* <primitive object={new GridHelper(50, 50)} /> */}
 
       {/* Additional Chairs and Desks  */}
       {/* <Chair position={[-15, 0.5, 5]} />          */}
@@ -112,6 +146,7 @@ function Scene() {
       {/* <Desk position={[-14, 0.55, 5]} /> */}
       <Desk position={[-14, 0.55, 0]} />
       <Desk position={[-14, 0.55, -5]} />
+
       <Desk position={[-14, 0.55, -10]} />
 
       <Desk position={[15, 0.55, 14]} />
@@ -132,7 +167,7 @@ function Scene() {
 
       <LoungeArea position={[15, 0, -17]} scale={1.5} />
 
-      <PoolTable position={[0, 0, 0]} scale={2}/>
+      <PoolTable position={[-15, 0, 7.5]} scale={2}/>
 
       {/* <Sofa position={[10, 0.5, -5]} /> */}
       {/* <Sofa position={[-10, 0.5, 5]} /> */}
@@ -148,6 +183,9 @@ function Scene() {
         <Sofa position={[8, 0.5, -1]} scale={1.5}/>
         <Sofa position={[5.5, 0.5, -4]} scale={1.5}/>
       </group>
+
+      <Floor2/>
+      <DoubleGlassDoors position={[0, 0, -20]} scale={5} />
 
       
     </>
