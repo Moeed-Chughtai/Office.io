@@ -29,8 +29,8 @@ const Home = () => {
     return (
         <>
             <Navbar />
-            <Canvas style = {{width: '100%', height: '100vh'}}>
-                <Scene/>
+            <Canvas style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
+                <Scene className='bg-linear-gradient'/>
             </Canvas>
             <ChatPopup />
             <SchedulePopup />
