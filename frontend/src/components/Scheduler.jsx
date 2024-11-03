@@ -3,12 +3,14 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Button, Dialog, DialogActions, DialogContent, TextField, DialogTitle } from '@mui/material';
+import '../css/Scheduler.css';
 
 const localizer = momentLocalizer(moment);
 
 const Scheduler = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: '', start: new Date(), end: new Date(), person: '', description: '' });
+  const [isAddingEvent, setIsAddingEvent] = useState(false);
 
   const generateMonthlySchedule = () => {
     const events = [];
@@ -128,6 +130,10 @@ const Scheduler = () => {
   };
 
   const handleAddEvent = async () => {
+    if (isAddingEvent) {
+        return; // Prevent duplicate execution 
+    } 
+    setIsAddingEvent(true);
     const newEventData = {
       title: newEvent.title,
       start: newEvent.start.toISOString(),

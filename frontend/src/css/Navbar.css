@@ -85,7 +85,7 @@ nav .navbar-item:nth-child(3):hover~.animation {
 nav .navbar-item:nth-child(4):hover~.animation {
     width: 120px;
     left: 360px;
-    background-color: #E04678;
+    background-color: #E0467B;
 }
 
 nav .navbar-item:nth-child(5):hover~.animation {
@@ -116,7 +116,7 @@ span {
 }
 
 .navbar-item:nth-child(4).active {
-    background-color: #E04678;
+    background-color: #E0467B;
 }
 
 .navbar-item:nth-child(5).active {
