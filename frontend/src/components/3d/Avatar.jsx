@@ -2,6 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import {wallBoundingBox} from './OfficeComponents';
 
 // import { throttle } from '../../utils/throttle';
 function throttle(func, limit) {
@@ -14,6 +15,7 @@ function throttle(func, limit) {
       }
     };
   }
+
 
 function Avatar({ isFirstPerson }) {
   const avatarRef = useRef();
@@ -29,6 +31,12 @@ function Avatar({ isFirstPerson }) {
   const [isGrounded, setIsGrounded] = useState(true); // To track if avatar is on the ground
 
   const logFirstPerson = throttle((mode) => console.log("Avatar: First-person mode:", mode), 1000); // 1 second delay
+
+  const checkCollision = (nextPosition) => {
+    const avatarBox = new THREE.Box3().setFromObject(avatarRef.current);
+    avatarBox.translate(nextPosition.clone().sub(avatarRef.current.position));
+    return avatarBox.intersectsBox(wallBoundingBox.current);
+  };
 
   useEffect(() => {
     logFirstPerson(isFirstPerson); // Throttled log for first-person mode
@@ -91,6 +99,18 @@ function Avatar({ isFirstPerson }) {
     //   } else {
     //     // console.log("Camera in third-person mode"); // Log camera behavior when in third-person
     //   }
+
+
+    // if (!checkCollision(nextPosition)) {
+    //     position.copy(nextPosition);
+    //   }
+
+      const nextPosition = new THREE.Vector3().copy(position).add(direction.multiplyScalar(speed));
+
+      // Now you can use `nextPosition` for any calculations or collision checks
+      if (!wallBoundingBox.containsPoint(nextPosition)) {
+        position.copy(nextPosition); // Only update position if not colliding with wall
+      }
     
 
     if (keysPressed.current.jump && isGrounded) {

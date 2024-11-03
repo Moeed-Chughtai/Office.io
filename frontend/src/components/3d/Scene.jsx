@@ -17,23 +17,49 @@ function Scene(isFirstPerson) {
 
   
 
-  // Update the OrbitControls target to follow the avatar
-
-  useFrame(() => {
-    if (avatarRef.current && controlsRef.current) {
-      controlsRef.current.target.copy(avatarRef.current.position);
-      controlsRef.current.update();
-    }
-  });
-
+  const speed = 0.1;
   const { camera } = useThree(); // Access the camera
 
-  // Set the default camera position once
+  // Key press tracking
+  const keysPressed = useRef({ ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false });
+
   useEffect(() => {
-    camera.position.set(10, 10, 10); // Set initial x, y, z position of camera
-    camera.lookAt(0, 0, 0); // Optionally point it toward the center
+    const handleKeyDown = (e) => {
+      if (keysPressed.current.hasOwnProperty(e.key)) keysPressed.current[e.key] = true;
+    };
+
+    const handleKeyUp = (e) => {
+      if (keysPressed.current.hasOwnProperty(e.key)) keysPressed.current[e.key] = false;
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  useFrame(() => {
+    // Update camera position based on key presses
+    if (keysPressed.current.ArrowUp) camera.position.z -= speed;
+    if (keysPressed.current.ArrowDown) camera.position.z += speed;
+    if (keysPressed.current.ArrowLeft) camera.position.x -= speed;
+    if (keysPressed.current.ArrowRight) camera.position.x += speed;
+
+    // Update OrbitControls to follow the camera
+    if (controlsRef.current) controlsRef.current.update();
+  });
+
+  useEffect(() => {
+    camera.position.set(10, 10, 10); // Set initial camera position
+    camera.lookAt(0, 0, 0); // Point towards the center
   }, [camera]);
 
+  
+
+  
 
   // Log `isFirstPerson` value to verify prop updates
 
@@ -186,6 +212,8 @@ function Scene(isFirstPerson) {
 
       <Floor2/>
       <DoubleGlassDoors position={[0, 0, -20]} scale={5} />
+
+      <Avatar/>
 
       
     </>

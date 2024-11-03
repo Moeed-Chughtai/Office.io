@@ -1,5 +1,5 @@
 // src/OfficeComponents.js
-import React,{useState, useRef} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTexture } from '@react-three/drei';
 import { useGLTF } from '@react-three/drei';
@@ -8,37 +8,34 @@ import BoardInteraction from '../../functions/BoardInteraction';
 
 // src/components/3d/Wall.js
 
+const wallBoundingBox = new THREE.Box3();
+
 export function Wall({ position, args }) {
-  // Load a subtle wall texture or pattern (assuming it's in your public folder)
-  const wallTexture = useTexture('/bluewall.jpg'); // Replace with your texture file path
+  const wallRef = useRef();
+  const wallTexture = useTexture('/bluewall.jpg');
+
+  useEffect(() => {
+    if (wallRef.current) {
+      wallBoundingBox.setFromObject(wallRef.current); // Set bounding box from wall object
+    }
+  }, []);
 
   return (
-    <group position={position}>
-      {/* Main Wall */}
+    <group ref={wallRef} position={position}>
       <mesh>
         <boxGeometry args={args} />
-        <meshStandardMaterial map={wallTexture} /> {/* Apply texture to the wall */}
+        <meshStandardMaterial map={wallTexture} />
       </mesh>
-
-      {/* Bottom Molding */}
       <mesh position={[0, -args[1] / 2 + 0.05, 0]}>
-        <boxGeometry args={[args[0], 0.1, 0.1]} /> {/* Adjust size as needed */}
-        <meshStandardMaterial color="#888888" /> {/* Darker color for molding */}
+        <boxGeometry args={[args[0], 0.1, 0.1]} />
+        <meshStandardMaterial color="#888888" />
       </mesh>
-
-      
-      {/* <mesh position={[0, args[1] / 4, 0.02]}>
-        <boxGeometry args={[1, 1.2, 0.05]} /> 
-        <meshStandardMaterial color="#444444" /> 
-      </mesh>
-      
-      <mesh position={[0, args[1] / 4, 0.03]}>
-        <boxGeometry args={[0.9, 1.1, 0.01]} />
-        <meshStandardMaterial color="#87ceeb" opacity={0.4} transparent /> 
-      </mesh> */}
     </group>
   );
 }
+
+// Export wallBoundingBox as a standalone export
+export { wallBoundingBox };
 
 export function SmallWall({ position, args = [5, 5, 0.2] }) {
     return (
