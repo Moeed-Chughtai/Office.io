@@ -7,6 +7,7 @@ import ChatPopup from '../components/ChatPopup.jsx';
 import { useState } from 'react';
 import UserPopup from '../components/UserPopup.jsx'; // Import UserPopup
 import SchedulePopup from '../components/SchedulePopup.jsx';
+import AnnouncementPopup from '../components/AnnouncementPopup.jsx';
 
 const Home = () => {
   // first person view
@@ -31,26 +32,16 @@ const Home = () => {
     setShowPopup(false);
   };
 
-  return (
-    <>
-      <Navbar />
-      <Canvas style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
-        <Scene isFirstPerson={isFirstPerson} onAvatarClick={handleAvatarClick} /> {/* Pass handler to Scene */}
-      </Canvas>
-
-      {/* Conditionally render UserPopup outside of Canvas */}
-      {showPopup && (
-        <UserPopup
-          name={popupData.name}
-          summary={popupData.summary}
-          onClose={handleClosePopup}
-        />
-      )}
-
-      <ChatPopup />
-      <SchedulePopup />
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+            <Canvas style={{ width: '100%', height: '100vh', position: 'absolute', top: 0, left: 0 }} className='bg-linear-gradient'>
+                <Scene className='bg-linear-gradient'/>
+            </Canvas>
+            <ChatPopup />
+            <SchedulePopup />
+        </>
+    );
 }
 
 export default Home;
