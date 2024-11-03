@@ -8,6 +8,9 @@ export default {
     extend: {
       fontFamily: {
         'uniform': ['MagnumSans', 'sans-serif'],
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(to top right, #614879, rgb(55, 19, 80))',
       }
     },
   },
